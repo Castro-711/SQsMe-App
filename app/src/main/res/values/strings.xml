@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">SQsMe-App</string>
+    <string name="title_activity_order_drink">OrderDrink</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- Drinks -->
+    <string name="cheiftain">Cheiftain IPA</string>
+    <string name="heineken">Heineken</string>
+    <string name="coors">Coors Light</string>
+
+
+    <!--                    Drinks Strings + Images                                   -->
+
+    <string-array name="drinksArray">
+        <item name="franciscan_well" image="https://s3.amazonaws.com/brewerydbapi/brewery/6egX8g/upload_B7bDT1-large.png">
+            Franciscan Well
+        </item>
+        <item name="j_wells_brewery" image="https://s3.amazonaws.com/brewerydbapi/brewery/XPKDbB/upload_Kb8OmN-large.png">
+            J Wells Brewery
+        </item>
+        <item name="beadecas_well" image="https://s3.amazonaws.com/brewerydbapi/beer/PzMpUp/upload_bXCgET-large.png">
+            Beadeca's Well
+        </item>
+    </string-array>
+</resources>

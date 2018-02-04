@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="orderDrinkImage" type="id">orderDrinkImage</item>
+    <item name="cheiftainImg" type="id">cheiftainImg</item>
+    <item name="placeOrder" type="id">placeOrder</item>
+    <item name="drinkName" type="id">drinkName</item>
+    <item name="drinkQuantity" type="id">drinkQuantity</item>
+</resources>

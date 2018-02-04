@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.squeuesme.PlaceOrder">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@id/placeOrder"
+            android:text="Place Order"
+            android:layout_width="match_parent"
+            android:layout_height="50sp" />
+
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@id/drinkName"
+            android:tooltipText="Name of drink"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_margin="10sp"
+            android:textAlignment="center"
+            android:background="#ffffff" />
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@id/drinkQuantity"
+            android:textAlignment="center"
+            android:tooltipText="Number of drinks"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:background="#ffffff"
+            android:padding="10sp"
+            android:layout_margin="10sp"
+            />
+
+    </LinearLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>
