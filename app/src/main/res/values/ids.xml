@@ -10,4 +10,5 @@
     <item name="edtDrinkQuantity" type="id">edtDrinkQuantity</item>
     <item name="tvOrdersHeading" type="id">tvOrdersHeading</item>
     <item name="lvCurrentOrder" type="id">lvCurrentOrder</item>
+    <item name="btnRemoveLastDrink" type="id">btnRemoveLastDrink</item>
 </resources>
