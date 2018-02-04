@@ -13,20 +13,20 @@
         <activity
             android:name=".OrderDrink"
             android:label="@string/title_activity_order_drink"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".fragments.FragmentOne" />
         <activity android:name=".fragments.FragmentTwo" />
         <activity android:name=".fragments.FragmentThree" />
-        <activity android:name="com.squeuesme.PlaceOrder"
-                  android:windowSoftInputMode="stateHidden"> <!-- hides keyboard -->
+        <activity
+            android:name=".PlaceOrder"
+            android:windowSoftInputMode="stateHidden"> <!-- hides keyboard -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".OrdersBoardActivity"></activity>
     </application>
 
 </manifest>

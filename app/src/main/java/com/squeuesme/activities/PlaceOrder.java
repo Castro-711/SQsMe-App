@@ -1,11 +1,14 @@
-package com.squeuesme;
+package com.squeuesme.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,7 @@ import com.squeuesme.core.venue.OrdersBoard;
 import com.squeuesme.core.venue.Venue;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlaceOrder extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class PlaceOrder extends AppCompatActivity {
     private Button placeOrder;
     private Button addToOrder;
     private Button removeLastDrink;
+    private Button goOrdersBoard;
 
     private EditText drinkName;
     private String drinkNameString;
@@ -40,6 +45,8 @@ public class PlaceOrder extends AppCompatActivity {
     private ArrayList<String> listItems;
     private ArrayAdapter adapter;
 
+    private Random rand;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +55,7 @@ public class PlaceOrder extends AppCompatActivity {
         placeOrder = findViewById(R.id.btnPlaceOrder);
         addToOrder = findViewById(R.id.btnAddToOrder);
         removeLastDrink = findViewById(R.id.btnRemoveLastDrink);
+        goOrdersBoard = findViewById(R.id.btnOrdersBoard);
 
         drinkName = findViewById(R.id.edtDrinkName);
         drinkQuantity = findViewById(R.id.edtDrinkQuantity);
@@ -61,7 +69,7 @@ public class PlaceOrder extends AppCompatActivity {
         listItems = new ArrayList<>();
         adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_expandable_list_item_1,
+                android.R.layout.simple_list_item_activated_1,
                 listItems);
         listView.setAdapter(adapter);
 
@@ -76,7 +84,7 @@ public class PlaceOrder extends AppCompatActivity {
 
                 customer.placeOrder(currentOrder);
 
-                listView.setBackgroundColor(345);
+                listView.setBackgroundColor(Color.GREEN);
 
                 // need to reset currentOrders values
                 currentOrder = new Order();
@@ -123,7 +131,43 @@ public class PlaceOrder extends AppCompatActivity {
 
             }
         });
+
+        rand = new Random(123);
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(
+                    AdapterView<?> adapterView, View view, int i, long l) {
+
+                int next = rand.nextInt(12345);
+
+                Log.i("NEXT", next+"");
+
+                if(next % 2 == 0)
+                    view.setBackgroundColor(Color.BLUE);
+                else if (next % 3 == 0)
+                    view.setBackgroundColor(Color.YELLOW);
+                else
+                    view.setBackgroundColor(Color.MAGENTA);
+
+                return false;
+            }
+        });
+
+        goOrdersBoard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(
+                        PlaceOrder.this, OrdersBoardActivity.class);
+                //i.putExtra("OrdersBoard", ordersBoard);
+                startActivity(i);
+            }
+        });
     }
+
+    // maybe create a method where you can long press on the
+    // text view in the listView and then you can remove it
+    // from the order that would be slick - ish
 
     public void wipeEditTextValues(){
         drinkName.setText("");

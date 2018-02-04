@@ -1,12 +1,18 @@
 package com.squeuesme.core.venue;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.squeuesme.core.drink.Drink;
 import com.squeuesme.core.drink.Order;
 import com.squeuesme.core.observer.Observer;
 import com.squeuesme.core.observer.Subject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OrdersBoard implements Subject {
+public class OrdersBoard implements Subject, Serializable
+{
     private ArrayList<Observer> observers;
     private ArrayList<Order> activeOrders;
     private ArrayList<Order> completedOrders;
@@ -89,6 +95,15 @@ public class OrdersBoard implements Subject {
         return activeOrders;
     }
 
+    public ArrayList<String> getActiveOrdersStringList(){
+        ArrayList<String> toReturn = new ArrayList<>();
+
+        for(Order o: activeOrders)
+            toReturn.add(o.toString());
+
+        return toReturn;
+    }
+
     public ArrayList<Order> getCompletedOrders() {
         return completedOrders;
     }
@@ -96,4 +111,5 @@ public class OrdersBoard implements Subject {
     public String getBoardId() {
         return boardId;
     }
+
 }

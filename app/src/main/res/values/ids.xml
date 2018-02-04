@@ -11,4 +11,7 @@
     <item name="tvOrdersHeading" type="id">tvOrdersHeading</item>
     <item name="lvCurrentOrder" type="id">lvCurrentOrder</item>
     <item name="btnRemoveLastDrink" type="id">btnRemoveLastDrink</item>
+    <item name="btnOrdersBoard" type="id">btnOrdersBoard</item>
+    <item name="lvOrdersView" type="id">lvOrdersView</item>
+    <item name="btnGoPlaceOrder" type="id">btnGoPlaceOrder</item>
 </resources>
