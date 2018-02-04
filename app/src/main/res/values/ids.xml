@@ -2,7 +2,11 @@
 <resources>
     <item name="orderDrinkImage" type="id">orderDrinkImage</item>
     <item name="cheiftainImg" type="id">cheiftainImg</item>
-    <item name="placeOrder" type="id">placeOrder</item>
     <item name="drinkName" type="id">drinkName</item>
     <item name="drinkQuantity" type="id">drinkQuantity</item>
+    <item name="btnAddToOrder" type="id">btnAddToOrder</item>
+    <item name="btnPlaceOrder" type="id">btnPlaceOrder</item>
+    <item name="edtDrinkName" type="id">edtDrinkName</item>
+    <item name="edtDrinkQuantity" type="id">edtDrinkQuantity</item>
+    <item name="tvOrdersHeading" type="id">tvOrdersHeading</item>
 </resources>

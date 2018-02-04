@@ -101,7 +101,8 @@ public class Drink
     @Override
     public String toString()
     {
-        return this.getName() + "\t";
+        return this.getName() + "\t"
+                + this.getQuantity() + "\n";
     }
 
 }

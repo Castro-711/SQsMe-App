@@ -57,6 +57,14 @@ public class Order
         return orderCount;
     }
 
+    public void addDrinkToOrder(Drink _drink){
+        currentOrder.add(_drink);
+    }
+
+    public void removeDrinkFromOrder(Drink _drink){
+        currentOrder.remove(_drink);
+    }
+
     @Override
     public String toString()
     {

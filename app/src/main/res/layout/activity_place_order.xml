@@ -13,15 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:id="@id/placeOrder"
-            android:text="Place Order"
-            android:layout_width="match_parent"
-            android:layout_height="50sp" />
+
 
 
         <android.support.design.widget.TextInputEditText
-            android:id="@id/drinkName"
+            android:id="@id/edtDrinkName"
             android:tooltipText="Name of drink"
             android:layout_width="match_parent"
             android:layout_height="50sp"
@@ -30,7 +26,7 @@
             android:background="#ffffff" />
 
         <android.support.design.widget.TextInputEditText
-            android:id="@id/drinkQuantity"
+            android:id="@id/edtDrinkQuantity"
             android:textAlignment="center"
             android:tooltipText="Number of drinks"
             android:layout_width="match_parent"
@@ -39,6 +35,24 @@
             android:padding="10sp"
             android:layout_margin="10sp"
             />
+
+        <Button
+            android:id="@id/btnAddToOrder"
+            android:text="Add to order"
+            android:layout_width="match_parent"
+            android:layout_height="50sp" />
+
+        <Button
+            android:id="@id/btnPlaceOrder"
+            android:text="Place Order"
+            android:layout_width="match_parent"
+            android:layout_height="50sp" />
+
+        <!--<TextView-->
+            <!--android:id="@id/tvOrdersHeading"-->
+            <!--android:text="Current Active Orders"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="80sp" />-->
 
     </LinearLayout>
 

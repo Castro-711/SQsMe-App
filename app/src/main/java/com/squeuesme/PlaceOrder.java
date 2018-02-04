@@ -21,8 +21,11 @@ public class PlaceOrder extends AppCompatActivity {
     private Customer customer;
     private Venue venue;
     private OrdersBoard ordersBoard;
+    private Order currentOrder;
 
     private Button placeOrder;
+    private Button addToOrder;
+
     private EditText drinkName;
     private String drinkNameString;
     private EditText drinkQuantity;
@@ -33,15 +36,15 @@ public class PlaceOrder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
 
-        placeOrder = findViewById(R.id.placeOrder);
+        placeOrder = findViewById(R.id.btnPlaceOrder);
+        addToOrder = findViewById(R.id.btnAddToOrder);
 
-        drinkName = findViewById(R.id.drinkName);
-        drinkQuantity = findViewById(R.id.drinkQuantity);
+        drinkName = findViewById(R.id.edtDrinkName);
+        drinkQuantity = findViewById(R.id.edtDrinkQuantity);
 
+        ordersBoard = new OrdersBoard(); // edit orders board to get date and unique id
+        currentOrder = new Order();
 
-
-
-        ordersBoard = new OrdersBoard();
         venue = new Venue("Boomers", "Woodford", ordersBoard);
         getActiveCustomer(null);
 
@@ -51,26 +54,36 @@ public class PlaceOrder extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Log.i("drink name", "" + drinkName.getText());
-                Log.i("drink quantity", "" + drinkQuantity.getText());
+                customer.placeOrder(currentOrder);
 
-                drinkNameString = String.valueOf(drinkName.getText());
-                drinkQuantityInt = Integer.parseInt(String.valueOf(drinkQuantity.getText()));
-
-                Drink current = new Drink(drinkNameString, drinkQuantityInt);
-
-                Order order = new Order(current);
-
-                customer.placeOrder(order);
                 Log.i("Customer id", customer.getUniqueId());
                 Log.i("Customer order",
                         customer.getOrdersBoard().getActiveOrders() + "");
                 Log.i("Venue ordersBoard",
                         venue.getCurrentOrdersBoard().getActiveOrders() + "");
+
+                // need to reset currentOrders values
+                currentOrder = new Order();
             }
         });
 
+        addToOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                drinkNameString = String.valueOf(drinkName.getText());
+                drinkQuantityInt = Integer.parseInt(String.valueOf(drinkQuantity.getText()));
+
+                Log.i("drink name", "" + drinkName.getText());
+                Log.i("drink quantity", "" + drinkQuantity.getText());
+
+                Drink current = new Drink(drinkNameString, drinkQuantityInt);
+
+                currentOrder.addDrinkToOrder(current);
+
+                Log.i("Order", currentOrder.toString());
+            }
+        });
 
 
     }
