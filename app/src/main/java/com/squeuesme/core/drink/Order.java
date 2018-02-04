@@ -1,5 +1,7 @@
 package com.squeuesme.core.drink;
 
+import android.widget.ArrayAdapter;
+
 import java.util.ArrayList;
 
 /**
@@ -63,6 +65,15 @@ public class Order
 
     public void removeDrinkFromOrder(Drink _drink){
         currentOrder.remove(_drink);
+    }
+
+    public ArrayList<String> getOrderAsStringArrayList(){
+        ArrayList<String> order = new ArrayList<>();
+
+        for(Drink d: currentOrder)
+            order.add(d.toString());
+
+        return order;
     }
 
     @Override

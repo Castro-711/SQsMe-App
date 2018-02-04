@@ -19,7 +19,8 @@
         <activity android:name=".fragments.FragmentOne" />
         <activity android:name=".fragments.FragmentTwo" />
         <activity android:name=".fragments.FragmentThree" />
-        <activity android:name="com.squeuesme.PlaceOrder">
+        <activity android:name="com.squeuesme.PlaceOrder"
+                  android:windowSoftInputMode="stateHidden"> <!-- hides keyboard -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

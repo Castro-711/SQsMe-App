@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.squeuesme.activities.R;
 import com.squeuesme.core.drink.Drink;
@@ -15,6 +17,8 @@ import com.squeuesme.core.drink.Order;
 import com.squeuesme.core.user.Customer;
 import com.squeuesme.core.venue.OrdersBoard;
 import com.squeuesme.core.venue.Venue;
+
+import java.util.ArrayList;
 
 public class PlaceOrder extends AppCompatActivity {
 
@@ -31,6 +35,10 @@ public class PlaceOrder extends AppCompatActivity {
     private EditText drinkQuantity;
     private int drinkQuantityInt;
 
+    private ListView listView;
+    private ArrayList<String> listItems;
+    private ArrayAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +53,16 @@ public class PlaceOrder extends AppCompatActivity {
         ordersBoard = new OrdersBoard(); // edit orders board to get date and unique id
         currentOrder = new Order();
 
+        listView = findViewById(R.id.lvCurrentOrder);
+        listItems = new ArrayList<>();
+
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_expandable_list_item_1,
+                listItems);
+
+        listView.setAdapter(adapter);
+
         venue = new Venue("Boomers", "Woodford", ordersBoard);
         getActiveCustomer(null);
 
@@ -56,12 +74,6 @@ public class PlaceOrder extends AppCompatActivity {
 
                 customer.placeOrder(currentOrder);
 
-                Log.i("Customer id", customer.getUniqueId());
-                Log.i("Customer order",
-                        customer.getOrdersBoard().getActiveOrders() + "");
-                Log.i("Venue ordersBoard",
-                        venue.getCurrentOrdersBoard().getActiveOrders() + "");
-
                 // need to reset currentOrders values
                 currentOrder = new Order();
             }
@@ -72,20 +84,36 @@ public class PlaceOrder extends AppCompatActivity {
             public void onClick(View view) {
 
                 drinkNameString = String.valueOf(drinkName.getText());
-                drinkQuantityInt = Integer.parseInt(String.valueOf(drinkQuantity.getText()));
-
-                Log.i("drink name", "" + drinkName.getText());
-                Log.i("drink quantity", "" + drinkQuantity.getText());
+                getQuantity();
 
                 Drink current = new Drink(drinkNameString, drinkQuantityInt);
 
                 currentOrder.addDrinkToOrder(current);
 
+                listItems.add(current.toString());
+                adapter.notifyDataSetChanged();
+
+                wipeEditTextValues();
+                drinkName.requestFocus();
+
+                for(String i: listItems)
+                    Log.i("listItem ", i + "");
+
                 Log.i("Order", currentOrder.toString());
             }
         });
+    }
 
+    public void wipeEditTextValues(){
+        drinkName.setText("");
+        drinkQuantity.setText("");
+    }
 
+    public void getQuantity(){
+        if(drinkQuantity.getText().toString().equals(""))
+            drinkQuantityInt = 0;
+        else
+            drinkQuantityInt = Integer.parseInt(drinkQuantity.getText().toString());
     }
 
     public void getActiveCustomer(Customer _customer){

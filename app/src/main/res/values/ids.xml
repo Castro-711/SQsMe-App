@@ -9,4 +9,5 @@
     <item name="edtDrinkName" type="id">edtDrinkName</item>
     <item name="edtDrinkQuantity" type="id">edtDrinkQuantity</item>
     <item name="tvOrdersHeading" type="id">tvOrdersHeading</item>
+    <item name="lvCurrentOrder" type="id">lvCurrentOrder</item>
 </resources>
