@@ -27,10 +27,24 @@ public class OrdersBoard implements Subject, Serializable
      * of the day and customers as they come and go
      */
 
+    // might add venue to the constructor
+
     public OrdersBoard() {
         observers = new ArrayList<>();
         activeOrders = new ArrayList<>();
         completedOrders = new ArrayList<>();
+
+        boardCount++;
+        boardId = "Boomers " + boardCount;
+    }
+
+    public OrdersBoard(Venue _venue) {
+        observers = new ArrayList<>();
+        activeOrders = new ArrayList<>();
+        completedOrders = new ArrayList<>();
+
+
+        registerObserver(_venue);
 
         boardCount++;
         boardId = "Boomers " + boardCount;
@@ -43,7 +57,7 @@ public class OrdersBoard implements Subject, Serializable
      * @param _order
      */
 
-    public void registerNewOrder(Order _order) {
+    public void registerNewOrder(String _customer, Order _order) {
         activeOrders.add(_order);
 
         notifyObservers();

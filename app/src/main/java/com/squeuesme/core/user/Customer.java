@@ -98,7 +98,7 @@ public class Customer extends User
 
     public void placeOrder(Order _order)
     {
-        activeVenue.getCurrentOrdersBoard().registerNewOrder(_order);
+        activeVenue.registerCustomerOrder(this.getUniqueId(), _order);
     }
 
     public OrdersBoard getOrdersBoard(){

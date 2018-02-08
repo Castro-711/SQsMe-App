@@ -1,6 +1,7 @@
 package com.squeuesme.core.venue;
 
 import com.squeuesme.core.drink.Drink;
+import com.squeuesme.core.drink.Order;
 import com.squeuesme.core.observer.Observer;
 import com.squeuesme.core.user.Customer;
 import com.squeuesme.core.user.StaffMember;
@@ -37,9 +38,9 @@ public class Venue implements Observer
         // set arguments
         setName(_name);
         setAddress(_address);
+        setCurrentOrdersBoard(_ordersBoard);
 
         // instantiate
-        currentOrdersBoard = _ordersBoard;
         activeCustomers = new ArrayList<>();
         activeStaffMembers = new ArrayList<>();
     }
@@ -107,6 +108,10 @@ public class Venue implements Observer
      * @return
      */
 
+    public void registerCustomerOrder(String _customerId, Order _order){
+        currentOrdersBoard.getActiveOrders().add(_order);
+    }
+
     public void addDrinkToMenu(Drink _drink)
     {
         venueMenu.add(_drink);
@@ -143,6 +148,7 @@ public class Venue implements Observer
     public void setCurrentOrdersBoard(OrdersBoard _ordersBoard)
     {
         currentOrdersBoard = _ordersBoard;
+        currentOrdersBoard.registerObserver(this);
     }
 
     public ArrayList<Customer> getActiveCustomers()

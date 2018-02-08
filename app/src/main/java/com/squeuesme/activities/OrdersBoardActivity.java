@@ -3,6 +3,7 @@ package com.squeuesme.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,20 +33,27 @@ public class OrdersBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_orders_board);
 
         Intent i = getIntent();
-        ordersBoard = new OrdersBoard();
-        //ordersBoard = (OrdersBoard) i.getSerializableExtra("OrdersBoard");
-        // try this again by just passing venue
 
+        ordersList = i.getStringArrayListExtra("ordersBoard");
+        ordersBoard = venue.getCurrentOrdersBoard();
 
         listView = findViewById(R.id.lvOrdersView);
         ordersList = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(
+        adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.activity_list_item,
                 ordersList);
 
 
         listView.setAdapter(adapter);
+
+        ordersList = ordersBoard.getActiveOrdersStringList();
+
+        String tmp = "";
+
+        for(Order o: ordersBoard.getActiveOrders())
+            tmp += o.toString() + "\n";
+        Log.i("active", tmp);
 
         goPlaceOrder = findViewById(R.id.btnGoPlaceOrder);
 
@@ -57,7 +65,7 @@ public class OrdersBoardActivity extends AppCompatActivity {
             }
         });
 
-        ordersList = ordersBoard.getActiveOrdersStringList();
+
         adapter.notifyDataSetChanged();
 
     }

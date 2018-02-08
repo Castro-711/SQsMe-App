@@ -13,7 +13,8 @@
         <activity
             android:name=".OrderDrink"
             android:label="@string/title_activity_order_drink"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".fragments.FragmentOne" />
         <activity android:name=".fragments.FragmentTwo" />
         <activity android:name=".fragments.FragmentThree" />
