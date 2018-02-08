@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squeuesme.activities.R;
 import com.squeuesme.core.drink.Drink;
 import com.squeuesme.core.drink.Order;
@@ -38,17 +40,20 @@ public class PlaceOrder extends AppCompatActivity {
     private Button goOrdersBoard;
 
     private EditText drinkName;
-    private String drinkNameString;
     private TextView nameWarning;
+    private String drinkNameString;
     private EditText drinkQuantity;
-    private int drinkQuantityInt;
     private TextView quantityWarning;
+    private int drinkQuantityInt;
 
     private ListView listView;
+    private TextView listHeading;
     private ArrayList<String> listItems;
     private ArrayAdapter adapter;
 
     private boolean isPlaced;
+
+    private DatabaseReference myRef;
 
     private Random rand;
 
@@ -56,6 +61,14 @@ public class PlaceOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        // end of URL
+        myRef = database.getReferenceFromUrl(
+                "https://sqsme-funknebula.firebaseio.com/ ");
+
+        myRef.setValue("Hello, World!");
 
         placeOrder = findViewById(R.id.btnPlaceOrder);
         addToOrder = findViewById(R.id.btnAddToOrder);
@@ -69,6 +82,7 @@ public class PlaceOrder extends AppCompatActivity {
 
         // dynamically adding data to listView
         listView = findViewById(R.id.lvCurrentOrder);
+        listHeading = findViewById(R.id.tvOrdersHeading);
         listItems = new ArrayList<>();
         adapter = new ArrayAdapter<>(
                 this,
@@ -81,6 +95,7 @@ public class PlaceOrder extends AppCompatActivity {
         currentOrder = new Order();
 
         venue = new Venue("Boomers", "Woodford", ordersBoard);
+        ordersBoard.registerObserver(venue);
 
         customer = new Customer("12345");
 
@@ -91,49 +106,14 @@ public class PlaceOrder extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                customer.placeOrder(currentOrder);
-
-                listView.setBackgroundColor(Color.GREEN);
-
-                // need to reset currentOrders values
-                currentOrder = new Order();
-
-                Log.i("activeOrders", ordersBoard.getActiveOrders().size() + "");
-
-                isPlaced = true;
-                removeLastDrink.setText("Cancel Order");
-                removeLastDrink.setTextColor(Color.RED);
-
+                placeOrderButtonFunc();
             }
         });
 
         addToOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                getDrinkName();
-                getDrinkQuantity();
-
-                if(nameWarning.getVisibility() == View.GONE
-                        && quantityWarning.getVisibility() == View.GONE){
-
-                    listView.setVisibility(View.VISIBLE);
-
-                    // create and add drink to order
-                    Drink current = new Drink(drinkNameString, drinkQuantityInt);
-                    currentOrder.addDrinkToOrder(current);
-                    // add it to listItems, so reflected on listView
-                    listItems.add(current.toString());
-                    adapter.notifyDataSetChanged();
-
-                }
-
-                // clean up after drink entered
-                wipeEditTextValues();
-                drinkName.requestFocus();
-
-                Log.i("activeOrders", ordersBoard.getActiveOrders().size() + "");
+                addToOrderButtonFunc();
             }
         });
 
@@ -141,35 +121,7 @@ public class PlaceOrder extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(isPlaced = false) // last drink is being removed
-                {
-                    int listSize = listItems.size();
-
-                    if(listSize == 1)
-                        listView.setVisibility(View.GONE);
-
-                    if(listSize > 0)
-                    {
-                        listItems.remove(listSize - 1);
-                        adapter.notifyDataSetChanged();
-                        currentOrder.getCurrentOrder().remove(listSize - 1);
-                    }
-
-                    for(String s: listItems)
-                        Log.i("listItems", "" + s);
-
-                    Log.i("Oder", "" + currentOrder.toString());
-                }
-                else // order is getting cancelled
-                {
-                    listItems.removeAll(listItems);
-                    adapter.notifyDataSetChanged();
-                    listView.setVisibility(View.GONE);
-
-                    currentOrder = new Order();
-                    removeLastDrink.setText("Remove Last Drink");
-                    isPlaced = false;
-                }
+                removeLastDrinkButtonFunc();
 
             }
         });
@@ -199,13 +151,116 @@ public class PlaceOrder extends AppCompatActivity {
         goOrdersBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(
-                        PlaceOrder.this, OrdersBoardActivity.class);
-                i.putStringArrayListExtra(
-                        "ordersBoard", ordersBoard.getActiveOrdersStringList());
-                startActivity(i);
+                goOrdersBoardButtonFunc();
             }
         });
+    }
+
+    public void placeOrderButtonFunc(){
+
+        if(!isPlaced) // order in progress
+        {
+            // order is placed, so lastOrder is set to currentOrder
+            customer.placeOrder(currentOrder);
+            customer.setLastOrder(currentOrder);
+
+            // got to use myRef, no direct
+            myRef.setValue(currentOrder);
+
+            // and current order is set to a new order
+            currentOrder = new Order();
+
+            listView.setBackgroundColor(Color.GREEN);
+
+            Log.i("activeOrders", ordersBoard.getActiveOrders().size() + "");
+            Log.i("customersOrdersBoard",
+                    customer.getActiveVenue().getCurrentOrdersBoard()
+                            .getActiveOrders().get(0).toString());
+            Log.i("venuesOrderBoard", venue.getCurrentOrdersBoard()
+                    .getActiveOrders().get(0).toString());
+            Log.i("ordersBoard", ordersBoard.getActiveOrders().get(0).toString());
+
+            isPlaced = true;
+            removeLastDrink.setText("Cancel Order");
+            removeLastDrink.setTextColor(Color.RED);
+        }
+    }
+
+    public void addToOrderButtonFunc(){
+
+        if(!isPlaced)
+        {
+            getDrinkName();
+            getDrinkQuantity();
+
+            if(nameWarning.getVisibility() == View.GONE
+                    && quantityWarning.getVisibility() == View.GONE){
+
+                listView.setVisibility(View.VISIBLE);
+                listHeading.setVisibility(View.VISIBLE);
+
+                // create and add drink to order
+                Drink current = new Drink(drinkNameString, drinkQuantityInt);
+                currentOrder.addDrinkToOrder(current);
+                // add it to listItems, so reflected on listView
+                listItems.add(current.toString());
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        // clean up after drink entered
+        wipeEditTextValues();
+        drinkName.requestFocus();
+
+        Log.i("activeOrders", ordersBoard.getActiveOrders().size() + "");
+    }
+
+    public void removeLastDrinkButtonFunc(){
+
+        if(isPlaced = false) // last drink is being removed
+        {
+            int listSize = listItems.size();
+
+            if(listSize == 1)
+                listView.setVisibility(View.GONE);
+
+            if(listSize > 0)
+            {
+                listItems.remove(listSize - 1);
+                adapter.notifyDataSetChanged();
+                currentOrder.getCurrentOrder().remove(listSize - 1);
+            }
+
+            for(String s: listItems)
+                Log.i("listItems", "" + s);
+
+            Log.i("Oder", "" + currentOrder.toString());
+        }
+        else // order is getting cancelled
+        {
+            listItems.removeAll(listItems);
+            adapter.notifyDataSetChanged();
+            listView.setVisibility(View.GONE);
+            listHeading.setVisibility(View.GONE);
+            listView.setBackgroundColor(Color.WHITE);
+
+            // need to remove last order as current order has been reset
+            customer.cancelOrder(customer.getLastOrder());
+
+            currentOrder = new Order();
+            removeLastDrink.setText("Remove Last Drink");
+            removeLastDrink.setTextColor(Color.BLACK);
+            isPlaced = false;
+        }
+    }
+
+    public void goOrdersBoardButtonFunc(){
+
+        Intent intent = new Intent(getApplicationContext(), OrdersBoardActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("activeOrders", ordersBoard.getActiveOrders());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     // maybe create a method where you can long press on the

@@ -2,6 +2,7 @@ package com.squeuesme.core.venue;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.squeuesme.core.drink.Drink;
 import com.squeuesme.core.drink.Order;
@@ -11,8 +12,7 @@ import com.squeuesme.core.observer.Subject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OrdersBoard implements Subject, Serializable
-{
+public class OrdersBoard implements Subject,  Parcelable {
     private ArrayList<Observer> observers;
     private ArrayList<Order> activeOrders;
     private ArrayList<Order> completedOrders;
@@ -57,10 +57,15 @@ public class OrdersBoard implements Subject, Serializable
      * @param _order
      */
 
-    public void registerNewOrder(String _customer, Order _order) {
+    public void registerNewOrder(Order _order) {
         activeOrders.add(_order);
+        Log.i("Register order", _order.toString());
+//        notifyObservers();
+    }
 
-        notifyObservers();
+    public void cancelledOrder(Order _order){
+        activeOrders.remove(_order);
+        Log.i("Cancelling order", _order.toString());
     }
 
     /**
@@ -126,4 +131,33 @@ public class OrdersBoard implements Subject, Serializable
         return boardId;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.activeOrders);
+        dest.writeList(this.completedOrders);
+    }
+
+    protected OrdersBoard(Parcel in) {
+        this.activeOrders = new ArrayList<Order>();
+        in.readList(this.activeOrders, Order.class.getClassLoader());
+        this.completedOrders = new ArrayList<Order>();
+    }
+
+    public static final Parcelable.Creator<OrdersBoard>
+            CREATOR = new Parcelable.Creator<OrdersBoard>() {
+        @Override
+        public OrdersBoard createFromParcel(Parcel source) {
+            return new OrdersBoard(source);
+        }
+
+        @Override
+        public OrdersBoard[] newArray(int size) {
+            return new OrdersBoard[size];
+        }
+    };
 }

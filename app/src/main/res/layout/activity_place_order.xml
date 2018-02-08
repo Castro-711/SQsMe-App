@@ -97,7 +97,8 @@
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
-                android:layout_height="40sp" />
+                android:layout_height="40sp"
+                android:visibility="gone"/>
 
             <ListView
                 android:id="@id/lvCurrentOrder"

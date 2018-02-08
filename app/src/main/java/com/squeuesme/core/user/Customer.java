@@ -96,9 +96,12 @@ public class Customer extends User
         activeVenue = _activeVenue;
     }
 
-    public void placeOrder(Order _order)
-    {
+    public void placeOrder(Order _order) {
         activeVenue.registerCustomerOrder(this.getUniqueId(), _order);
+    }
+
+    public void cancelOrder(Order _order){
+        activeVenue.removeCancelledOrder(_order);
     }
 
     public OrdersBoard getOrdersBoard(){

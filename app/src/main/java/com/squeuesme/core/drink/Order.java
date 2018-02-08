@@ -1,7 +1,6 @@
 package com.squeuesme.core.drink;
 
-import android.widget.ArrayAdapter;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,34 +9,57 @@ import java.util.ArrayList;
  * on the OrdersBoard of the given venue.
  */
 
-public class Order
+public class Order implements Serializable
 {
     private static int orderCount;
     private int currentOrderNum;
+    private String orderId;
+    private String customerId;
     private ArrayList<Drink> currentOrder;
     private ArrayList<Integer> quantity;
 
     /* CONSTRUCTORS */
+
+    /**
+     * On reflection, I think when creating an order
+     * a customer unique Id must be sent to the constructor.
+     * From there the drinks will be added one at a time.
+     */
 
     public Order(){
         currentOrder = new ArrayList<>();
         currentOrderNum = orderCount++;
     }
 
-    public Order(Drink _drink)
-    {
+    public Order(String _customerId){
+        customerId = _customerId;
         currentOrder = new ArrayList<>();
-        currentOrder.add(_drink);
         currentOrderNum = orderCount++;
     }
 
-    public Order(ArrayList<Drink> _currentOrder)
-    {
+    public Order(String _customerId, ArrayList<Drink> _currentOrder){
+        customerId = _customerId;
         currentOrder = _currentOrder;
         currentOrderNum = orderCount++;
     }
 
     /* GETTERS and SETTERS */
+
+    public String getOrderId(){
+        return orderId;
+    }
+
+    public void setOrderId(String _orderId){
+        orderId = _orderId;
+    }
+
+    public String getCustomerId(){
+        return customerId;
+    }
+
+    public void setCustomerId(String _customerId){
+        customerId = _customerId;
+    }
 
     public ArrayList<Drink> getCurrentOrder() {
         return currentOrder;

@@ -1,5 +1,7 @@
 package com.squeuesme.core.drink;
 
+import java.io.Serializable;
+
 /**
  * This class is to represent the abstract drink.
  * It will be the super class to all of the different
@@ -7,7 +9,7 @@ package com.squeuesme.core.drink;
  * Created by castro on 27/01/18.
  */
 
-public class Drink
+public class Drink implements Serializable
 {
     private String name;
     private int quantity;

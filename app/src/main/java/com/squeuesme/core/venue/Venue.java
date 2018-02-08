@@ -109,7 +109,11 @@ public class Venue implements Observer
      */
 
     public void registerCustomerOrder(String _customerId, Order _order){
-        currentOrdersBoard.getActiveOrders().add(_order);
+        currentOrdersBoard.registerNewOrder(_order);
+    }
+
+    public void removeCancelledOrder(Order _order){
+        currentOrdersBoard.cancelledOrder(_order);
     }
 
     public void addDrinkToMenu(Drink _drink)
