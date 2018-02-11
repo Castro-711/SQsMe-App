@@ -66,7 +66,7 @@ public class PlaceOrder extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         // end of URL
         myRef = database.getReferenceFromUrl(
-                "https://sqsme-funknebula.firebaseio.com/ ");
+                "https://sqsme-funknebula.firebaseio.com/FavouriteDrinks ");
 
         myRef.setValue("Hello, World!");
 

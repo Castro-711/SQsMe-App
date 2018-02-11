@@ -23,4 +23,9 @@
             Beadeca's Well
         </item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_customer_home">CustomerHome</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

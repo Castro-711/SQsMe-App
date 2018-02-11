@@ -62,7 +62,7 @@ public class OrdersBoardActivity extends AppCompatActivity {
                              new FirebaseListAdapter<Order>(
                              OrdersBoardActivity.this,
                              Order.class,
-                             android.R.layout.simple_list_item_1,
+                             android.R.layout.expandable_list_content,
                              myRef) {
 
 
