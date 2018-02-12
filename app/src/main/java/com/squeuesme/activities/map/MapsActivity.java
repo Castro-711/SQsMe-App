@@ -152,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void addFixedPubLocations(){
+
         LatLng roost = new LatLng(53.381078, -6.592405);
 
         // add a marker for the roost
@@ -170,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng oneils = new LatLng(53.381476, -6.591675);
 
-        // add a marker for the bradys
+        // add a marker for the oneills
         mMap.addMarker(new MarkerOptions()
                 .position(oneils)
                 .title("O'Neills Bar")

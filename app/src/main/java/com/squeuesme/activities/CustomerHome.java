@@ -1,9 +1,19 @@
 package com.squeuesme.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,19 +24,34 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.squeuesme.activities.map.MapsActivity;
+import com.squeuesme.activities.popup.PopRegister;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class CustomerHome extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+
+    private NavigationView navigationView;
+    private LocationManager locationManager;
+    private String provider;
+    private boolean hasPromptedCustomer;
+    private HashMap<String, LatLng> pubCoordinates;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(Color.BLACK);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setBackgroundColor(Color.YELLOW);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,28 +66,70 @@ public class CustomerHome extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setBackgroundColor(Color.BLACK);
+        navigationView.setItemTextColor(ColorStateList.valueOf(Color.WHITE));
+        navigationView.setItemIconTintList(ColorStateList.valueOf(Color.WHITE));
+
+        setUpMenuItems();
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        provider = locationManager.getBestProvider(new Criteria(), false);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.getLastKnownLocation(provider);
+        hasPromptedCustomer = true;
+        setUpHashMap();
+
+    }
+
+    public void setUpHashMap(){
+
+        LatLng roost = new LatLng(53.381078, -6.592405);
+        LatLng bradys = new LatLng(53.381596, -6.590388);
+        LatLng oneills = new LatLng(53.381476, -6.591675);
+        LatLng dukemans = new LatLng(53.381324, -6.591422);
+        LatLng studentU = new LatLng(53.382964, -6.603597);
+        LatLng clubEolas = new LatLng(53.384649, -6.601387);
+        LatLng myHouse = new LatLng(53.321530, -6.374587);
+
+        pubCoordinates = new HashMap<>();
+        pubCoordinates.put("roost", roost);
+        pubCoordinates.put("bradys", bradys);
+        pubCoordinates.put("oneills", oneills);
+        pubCoordinates.put("dukemans", dukemans);
+        pubCoordinates.put("studenU", studentU);
+        pubCoordinates.put("clubEolas", clubEolas);
+        pubCoordinates.put("myHouse", myHouse);
+    }
+
+    public void setUpMenuItems() {
 
         Menu menu = navigationView.getMenu();
 
-        MenuItem findVenue = menu.findItem(R.id.nav_camera);
-        findVenue.setTitle("Find a Venue");
+        MenuItem nearbyVenue = menu.findItem(R.id.nav_camera);
+        nearbyVenue.setTitle("Nearby Venue");
+        nearbyVenue.setIcon(R.drawable.menu_venue);
 
-        findVenue.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        MenuItem favourites = menu.findItem(R.id.nav_gallery);
+        favourites.setTitle("Favourites");
+        favourites.setIcon(R.drawable.favourites_ic);
 
-                startActivity(new Intent(CustomerHome.this, MapsActivity.class));
-
-                return false;
-            }
-        });
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -99,7 +166,7 @@ public class CustomerHome extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            startActivity(new Intent(CustomerHome.this, MapsActivity.class));
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -112,8 +179,95 @@ public class CustomerHome extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(
+                provider, 400, 1, this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        Double lat = location.getLatitude();
+        Double lng = location.getLongitude();
+
+       checkIfVenueClose(new LatLng(lat, lng));
+    }
+
+    public void checkIfVenueClose(LatLng latLng){
+
+        Double lat = latLng.latitude;
+        Double lng = latLng.longitude;
+
+        /**
+         * Iterates through the hash map to check if the we are at one
+         * of the pubs.
+         */
+
+        Iterator iterator = pubCoordinates.entrySet().iterator();
+
+        while(iterator.hasNext()){
+
+            Map.Entry pair = (Map.Entry) iterator.next();
+            String pub = pair.getKey().toString();
+            LatLng current = (LatLng) pair.getValue();
+
+            Log.i("lat", lat + "");
+            Log.i("lng", lng + "");
+
+            if(((current.latitude < lat + .0001000 ||
+                    current.latitude > lat - .0001000) &&
+                    (current.longitude < lng + .0001000 ||
+                            current.longitude > lng - .0001000)) &&
+                    hasPromptedCustomer){
+                hasPromptedCustomer = false;
+                Intent i = new Intent(CustomerHome.this, PopRegister.class);
+                i.putExtra("pubName", pub);
+                Log.i("pubName", pub);
+                startActivity(i);
+
+
+
+            } // if
+        } // while
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }

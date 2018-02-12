@@ -23,9 +23,19 @@
             Beadeca's Well
         </item>
     </string-array>
+
+    <string-array name="latlngs">
+        <item name="the_roost" lat="53.381078" lng="-6.592405"/>
+        <item name="bradys" lat="53.381596" lng="-6.590388"/>
+    </string-array>
+
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_customer_home">CustomerHome</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="registerMessage">
+        Would you like to register as an active customer to this Venue?
+    </string>
 </resources>
