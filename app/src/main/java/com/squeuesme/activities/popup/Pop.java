@@ -1,11 +1,13 @@
 package com.squeuesme.activities.popup;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -22,6 +24,8 @@ public class Pop extends Activity {
 
     private RatingBar ratingBar;
     private TextView openStatus;
+    private TextView pubName;
+    private ImageView pubIcon;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,8 +35,15 @@ public class Pop extends Activity {
 
         ratingBar = findViewById(R.id.ratingBar);
         openStatus = findViewById(R.id.openStatus);
+        pubName = findViewById(R.id.pubName);
+        pubIcon = findViewById(R.id.pubImage);
 
-        ratingBar.setRating((float) 4);
+        Intent i = getIntent();
+        String markerTitle = i.getStringExtra("markerTitle");
+
+        setCorrectPopUpInfo(markerTitle);
+
+        //ratingBar.setRating((float) 4);
 
         setOpenStatus();
 
@@ -46,6 +57,34 @@ public class Pop extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width * .8), (int)(height * .6));
+
+    }
+
+    public void setCorrectPopUpInfo(String markerTitle){
+        if(markerTitle.equals("Brady's Clockhouse"))
+        {
+            pubIcon.setImageResource(R.mipmap.bradys);
+            ratingBar.setRating((float) 3);
+            pubName.setText("Brady's Clockhouse");
+        }
+        else if(markerTitle.equals("The Roost"))
+        {
+            pubIcon.setImageResource(R.mipmap.the_roost);
+            ratingBar.setRating((float) 4);
+            pubName.setText("The Roost");
+        }
+        else if(markerTitle.equals("O'Neills Bar"))
+        {
+            pubIcon.setImageResource(R.mipmap.oneils2);
+            ratingBar.setRating((float) 2);
+            pubName.setText("O'Neills Bar");
+        }
+        else if(markerTitle.equals("The Duke and Coachman"))
+        {
+            pubIcon.setImageResource(R.mipmap.duke);
+            ratingBar.setRating((float) 3);
+            pubName.setText("The Duke and Coachman");
+        }
 
     }
 

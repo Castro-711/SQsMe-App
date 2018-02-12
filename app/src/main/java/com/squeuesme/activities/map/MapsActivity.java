@@ -39,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker roostMarker;
     private Marker lastMarker;
     private LatLng current;
+    private Double lat;
+    private Double lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,24 +107,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                String currentMarker = marker.getTitle();
+                String currentMarkerTitle = marker.getTitle();
 
                 marker.setIcon(BitmapDescriptorFactory.defaultMarker(
                         BitmapDescriptorFactory.HUE_ORANGE));
 
                 // now change last marker back to green if not same one clicked
                 if(lastMarker != null)
-                    if(!currentMarker.equals(lastMarker.getTitle()))
+                    if(!currentMarkerTitle.equals(lastMarker.getTitle()))
                         lastMarker.setIcon(BitmapDescriptorFactory.defaultMarker(
                                 BitmapDescriptorFactory.HUE_GREEN));
 
                 lastMarker = marker;
 
-                if(!currentMarker.equals("User"))
-                    startActivity(new Intent(MapsActivity.this, Pop.class));
+                Intent i = new Intent(MapsActivity.this, Pop.class);
+                i.putExtra("markerTitle", currentMarkerTitle);
+
+
+                if(!currentMarkerTitle.equals("User")){
+                    startActivity(i);
+//                    overridePendingTransition(
+//                            android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+
                 return false;
             }
         });
+
+        mMap.clear();
+
+        lat = 53.381295;
+        lng =  -6.591918;
+
+        // Add a marker in Sydney and move the camera
+        current = new LatLng(lat, lng);
+        roostMarker = mMap.addMarker(new MarkerOptions()
+                .position(current)
+                .title("User"));
+
+        addFixedPubLocations();
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
 
     }
 
@@ -179,23 +204,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        Double lat = 53.381295;
-        Double lng =  -6.591918;
 
         Log.i("Lat", lat.toString());
         Log.i("Lng", lng.toString());
-
-        mMap.clear();
-
-        // Add a marker in Sydney and move the camera
-        current = new LatLng(lat, lng);
-        roostMarker = mMap.addMarker(new MarkerOptions()
-                .position(current)
-                .title("User"));
-
-        addFixedPubLocations();
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
 
         // to get address
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
