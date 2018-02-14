@@ -35,8 +35,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private LocationManager locaionManager;
+    private Location location;
     private String provider;
-    private Marker roostMarker;
     private Marker lastMarker;
     private LatLng current;
     private Double lat;
@@ -65,10 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        Double lat = 53.381295;
-        Double lng =  -6.591918;
-
-        LatLng current = new LatLng(lat, lng);
+        location = locaionManager.getLastKnownLocation(provider);
     }
 
 
@@ -97,58 +94,52 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        // satellite map view
-//        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-
-        // a marker to keep track of last marker
-
-
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                String currentMarkerTitle = marker.getTitle();
-
-                marker.setIcon(BitmapDescriptorFactory.defaultMarker(
-                        BitmapDescriptorFactory.HUE_ORANGE));
-
-                // now change last marker back to green if not same one clicked
-                if(lastMarker != null)
-                    if(!currentMarkerTitle.equals(lastMarker.getTitle()))
-                        lastMarker.setIcon(BitmapDescriptorFactory.defaultMarker(
-                                BitmapDescriptorFactory.HUE_GREEN));
-
-                lastMarker = marker;
-
-                Intent i = new Intent(MapsActivity.this, Pop.class);
-                i.putExtra("markerTitle", currentMarkerTitle);
-
-
-                if(!currentMarkerTitle.equals("User")){
-                    startActivity(i);
-//                    overridePendingTransition(
-//                            android.R.anim.fade_in, android.R.anim.fade_out);
-                }
-
+                onMarkerClickFunctionality(marker);
                 return false;
             }
         });
 
         mMap.clear();
 
-        lat = 53.381295;
-        lng =  -6.591918;
+        lat = location.getLatitude();
+        lng = location.getLongitude();
 
-        // Add a marker in Sydney and move the camera
+        // get current location to animate camera there
         current = new LatLng(lat, lng);
-        roostMarker = mMap.addMarker(new MarkerOptions()
-                .position(current)
-                .title("User"));
+
+        mMap.setMyLocationEnabled(true);
 
         addFixedPubLocations();
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
 
+    }
+
+    public void onMarkerClickFunctionality(Marker marker){
+
+        String currentMarkerTitle = marker.getTitle();
+
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(
+                BitmapDescriptorFactory.HUE_ORANGE));
+
+        // now change last marker back to green if not same one clicked
+        if(lastMarker != null)
+            if(!currentMarkerTitle.equals(lastMarker.getTitle()))
+                lastMarker.setIcon(BitmapDescriptorFactory.defaultMarker(
+                        BitmapDescriptorFactory.HUE_GREEN));
+
+        // set last market to the current marker
+        lastMarker = marker;
+
+        Intent i = new Intent(MapsActivity.this, Pop.class);
+        i.putExtra("markerTitle", currentMarkerTitle);
+
+        if(!currentMarkerTitle.equals("User"))
+            startActivity(i);
     }
 
     public void addFixedPubLocations(){

@@ -7,16 +7,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squeuesme.activities.R;
+import com.squeuesme.core.user.Customer;
+import com.squeuesme.core.venue.Venue;
 
 import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * some notes:
+ * When you register, that is when you become a customer
+ * this should ease how to interact between venues and customers.
+ * The venue then that you are registering with can be included in the
+ * construction of the customer.
+ *
+ * Before registering users are only potential customers.
+ *
  * Created by castro on 10/02/18.
  */
 
@@ -26,6 +38,15 @@ public class PopRegister extends Activity {
     private TextView openStatus;
     private TextView pubName;
     private ImageView pubIcon;
+
+    private Button register;
+    private Button unRegister;
+
+    private Customer customer;
+    private Venue venue;
+    private boolean hasActiveVenue; // need to make sure when the customer
+    // leaves a certain distance from the pub that they are unregistered
+    // from that venues active customers
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,16 +59,15 @@ public class PopRegister extends Activity {
         pubName = findViewById(R.id.pubName);
         pubIcon = findViewById(R.id.pubImage);
 
+        register = findViewById(R.id.btnRegister);
+        unRegister = findViewById(R.id.btnNotReg);
+
         Intent i = getIntent();
         String pubName = i.getStringExtra("pubName");
 
         Log.i("Pub Name", pubName);
 
         setCorrectPopUpInfo(pubName);
-
-        //ratingBar.setRating((float) 4);
-
-//        setOpenStatus();
 
         // create a new display metric object
         // to get the dimensions of the screen
@@ -59,6 +79,29 @@ public class PopRegister extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int)(width * .8), (int)(height * .6));
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * in here I will create the customer,
+                 * connect him to the venue by getting the venue information
+                 */
+
+
+            }
+        });
+
+        unRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * here I will remove the user from being a customer
+                 * allowing them to receive notifications on for registration
+                 * with other pubs
+                 */
+            }
+        });
 
     }
 
@@ -81,53 +124,23 @@ public class PopRegister extends Activity {
         else if(_pubName.equals("dukemans"))
         {
             pubIcon.setImageResource(R.mipmap.duke);
-            pubName.setText("The Duke and Coachman");
+            pubName.setText("Duke and Coachman's");
         }
         else if(_pubName.equals("myHouse"))
         {
-            pubIcon.setImageResource(R.mipmap.cheiftain_round);
-            pubName.setText("The Duke and Coachman");
+            pubIcon.setImageResource(R.mipmap.home_sweet);
+            pubName.setText("Home Sweet Home");
         }
-
-    }
-
-    public void setOpenStatus(){
-
-        Date currentTime = Calendar.getInstance().getTime();
-
-        String currentString = currentTime.toString();
-        String[] dateComponents = currentString.split(" ");
-        String[] hhmmss = dateComponents[3].split(":");
-
-        String day = dateComponents[0];
-        int hours = Integer.parseInt(hhmmss[0]);
-        int mins = Integer.parseInt(hhmmss[1]);
-
-        Log.i("Hours", hours + "");
-        Log.i("Time", mins + "");
-
-        for(int i = 0; i < dateComponents.length; i++)
-            Log.i("" + i, dateComponents[i]);
-
-        if(day.equals("Sun"))
-            if(hours <= 12 && mins <= 30 ||
-                    hours >=23 && mins >= 00){
-                openStatus.setText("CLOSED");
-                openStatus.setTextColor(Color.RED);
-            }
-
-        else if(day.equals("Fri") || day.equals("Sat"))
-            if(hours <= 10 && mins <= 30){
-                openStatus.setText("CLOSED");
-                openStatus.setTextColor(Color.RED);
-            }
-
-        else
-            if(hours <= 10 && mins <= 30 ||
-                    hours >= 23 && mins >= 30){
-                openStatus.setText("CLOSED");
-                openStatus.setTextColor(Color.RED);
-            }
+        else if(_pubName.equals("student_u"))
+        {
+            pubIcon.setImageResource(R.mipmap.student_u);
+            pubName.setText("Student Union");
+        }
+        else if(_pubName.equals("clubEolas"))
+        {
+            pubIcon.setImageResource(R.mipmap.student_u);
+            pubName.setText("Club Eolas");
+        }
 
     }
 }

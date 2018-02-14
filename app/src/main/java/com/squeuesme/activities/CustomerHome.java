@@ -52,6 +52,8 @@ public class CustomerHome extends AppCompatActivity
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setBackgroundColor(Color.YELLOW);
+        fab.setImageResource(R.mipmap.beer_menu);
+        fab.setSize(10);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +62,7 @@ public class CustomerHome extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -87,9 +89,10 @@ public class CustomerHome extends AppCompatActivity
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.getLastKnownLocation(provider);
+        Location location = locationManager.getLastKnownLocation(provider);
         hasPromptedCustomer = true;
         setUpHashMap();
+        onLocationChanged(location); // call to get it to act fast if user present at venue
 
     }
 
@@ -230,27 +233,28 @@ public class CustomerHome extends AppCompatActivity
 
         Iterator iterator = pubCoordinates.entrySet().iterator();
 
+        float[] results = new float[10];
+
         while(iterator.hasNext()){
 
             Map.Entry pair = (Map.Entry) iterator.next();
-            String pub = pair.getKey().toString();
             LatLng current = (LatLng) pair.getValue();
+            String pub = pair.getKey().toString();
+
+            Location.distanceBetween(current.latitude, current.longitude, lat, lng,results);
 
             Log.i("lat", lat + "");
             Log.i("lng", lng + "");
+            Log.i("pubName", pub);
 
-            if(((current.latitude < lat + .0001000 ||
-                    current.latitude > lat - .0001000) &&
-                    (current.longitude < lng + .0001000 ||
-                            current.longitude > lng - .0001000)) &&
-                    hasPromptedCustomer){
+            Intent i = new Intent(CustomerHome.this, PopRegister.class);
+            i.putExtra("pubName", pub);
+
+            if(results[0] < 30.0f){
                 hasPromptedCustomer = false;
-                Intent i = new Intent(CustomerHome.this, PopRegister.class);
-                i.putExtra("pubName", pub);
-                Log.i("pubName", pub);
+
+                Log.i("pubName checkIfVenue", pub);
                 startActivity(i);
-
-
 
             } // if
         } // while

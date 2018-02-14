@@ -3,10 +3,13 @@ package com.squeuesme.activities.popup;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,6 +29,11 @@ public class Pop extends Activity {
     private TextView openStatus;
     private TextView pubName;
     private ImageView pubIcon;
+    private ImageButton drinkMenu;
+    private ImageButton pubWebsite;
+    private ImageButton pubFacebook;
+    private String pubUri;
+    private String fbUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,10 +46,30 @@ public class Pop extends Activity {
         pubName = findViewById(R.id.pubName);
         pubIcon = findViewById(R.id.pubImage);
 
+        drinkMenu = findViewById(R.id.imgDrinkMenu);
+        pubWebsite = findViewById(R.id.imgPubWeb);
+        pubFacebook = findViewById(R.id.imgPubFacebook);
+
         Intent i = getIntent();
-        String markerTitle = i.getStringExtra("markerTitle");
+        final String markerTitle = i.getStringExtra("markerTitle");
 
         setCorrectPopUpInfo(markerTitle);
+
+        pubWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pubUri));
+                startActivity(browserIntent);
+            }
+        });
+
+        pubFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fbUri));
+                startActivity(facebookIntent);
+            }
+        });
 
         //ratingBar.setRating((float) 4);
 
@@ -64,28 +92,51 @@ public class Pop extends Activity {
         if(markerTitle.equals("Brady's Clockhouse"))
         {
             pubIcon.setImageResource(R.mipmap.bradys);
-            ratingBar.setRating((float) 3);
+            ratingBar.setRating((float) 4);
             pubName.setText("Brady's Clockhouse");
+            pubUri = "http://bradysbarmaynooth.ie/";
+            fbUri = "https://www.facebook.com/BradysClockhouseB2/";
         }
         else if(markerTitle.equals("The Roost"))
         {
             pubIcon.setImageResource(R.mipmap.the_roost);
-            ratingBar.setRating((float) 4);
+            ratingBar.setRating((float) 3);
             pubName.setText("The Roost");
+            pubUri = "http://www.louisfitzgerald.com/roost";
+            fbUri = "https://www.facebook.com/TheRoostMaynooth/";
         }
         else if(markerTitle.equals("O'Neills Bar"))
         {
             pubIcon.setImageResource(R.mipmap.oneils2);
             ratingBar.setRating((float) 2);
             pubName.setText("O'Neills Bar");
+            pubUri = "http://www.oneillsbar.ie/";
+            fbUri = "https://www.facebook.com/ONeills-Discobar-126410390775827/?rf=146034938789681";
         }
         else if(markerTitle.equals("The Duke and Coachman"))
         {
             pubIcon.setImageResource(R.mipmap.duke);
-            ratingBar.setRating((float) 3);
+            ratingBar.setRating((float) 4);
             pubName.setText("The Duke and Coachman");
+            pubUri = "http://thedukeandcoachman.ie/";
+            fbUri = "https://www.facebook.com/thedukeandcoachmanmaynooth/";
         }
-
+        else if(markerTitle.equals("Student Union Bar"))
+        {
+            pubIcon.setImageResource(R.mipmap.student_u);
+            ratingBar.setRating((float) 4);
+            pubName.setText("Student Union Bar");
+            pubUri = "http://msu.ie/services/the-bar-venue.html";
+            fbUri = "https://www.facebook.com/MaynoothSU/";
+        }
+        else if(markerTitle.equals("Club Eolas"))
+        {
+            pubIcon.setImageResource(R.mipmap.club_eolas);
+            ratingBar.setRating((float) 5);
+            pubName.setText("Club Eolas");
+            pubUri = "http://msu.ie/services/the-bar-venue.html";
+            fbUri = "https://www.facebook.com/groups/MUComputerScience/";
+        }
     }
 
     public void setOpenStatus(){
