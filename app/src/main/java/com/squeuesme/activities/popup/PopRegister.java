@@ -60,7 +60,7 @@ public class PopRegister extends Activity {
         pubIcon = findViewById(R.id.pubImage);
 
         register = findViewById(R.id.btnRegister);
-        unRegister = findViewById(R.id.btnNotReg);
+//        unRegister = findViewById(R.id.btnNotReg);
 
         Intent i = getIntent();
         String pubName = i.getStringExtra("pubName");
@@ -92,16 +92,16 @@ public class PopRegister extends Activity {
             }
         });
 
-        unRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /**
-                 * here I will remove the user from being a customer
-                 * allowing them to receive notifications on for registration
-                 * with other pubs
-                 */
-            }
-        });
+//        unRegister.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /**
+//                 * here I will remove the user from being a customer
+//                 * allowing them to receive notifications on for registration
+//                 * with other pubs
+//                 */
+//            }
+//        });
 
     }
 

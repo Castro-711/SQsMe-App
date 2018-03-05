@@ -1,7 +1,5 @@
 package com.squeuesme.activities;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -19,9 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squeuesme.activities.fragments.FragmentOne;
-import com.squeuesme.activities.fragments.FragmentThree;
-import com.squeuesme.activities.fragments.FragmentTwo;
+//import com.squeuesme.activities.fragments.FragmentOne;
 
 
 public class OrderDrink extends AppCompatActivity {
@@ -45,29 +41,29 @@ public class OrderDrink extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_drink);
+//
+//        FragmentOne f1 = new FragmentOne();
+//        FragmentTwo f2 = new FragmentTwo();
+//        FragmentThree f3 = new FragmentThree();
 
-        FragmentOne f1 = new FragmentOne();
-        FragmentTwo f2 = new FragmentTwo();
-        FragmentThree f3 = new FragmentThree();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (findViewById(R.id.container));
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
     }
 
@@ -130,13 +126,13 @@ public class OrderDrink extends AppCompatActivity {
             int section = getArguments().getInt(ARG_SECTION_NUMBER);
 
             if(section == 1)
-                drinkImage.setImageResource(R.mipmap.heineken_round);
+                drinkImage.setImageResource(R.mipmap.ic_cheiftain);
             else if(section == 2)
-                drinkImage.setImageResource(R.mipmap.cheiftain);
+                drinkImage.setImageResource(R.mipmap.ic_coors);
             else
-                drinkImage.setImageResource(R.mipmap.coors);
+                drinkImage.setImageResource(R.mipmap.ic_heineken);
 
-            TextView textView = (TextView) rootView.findViewById(R.id.drink_name);
+            TextView textView = rootView.findViewById(R.id.drink_name);
             textView.setText(R.string.cheiftain);
             return rootView;
         }

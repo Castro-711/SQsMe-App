@@ -1,11 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- this is the content outside of the action bar and
+fab button within the customer home activity -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.squeuesme.activities.CustomerHome"
-    tools:showIn="@layout/app_bar_customer_home">
+    android:orientation="vertical"
+    android:layout_marginTop="50dp"
+    android:weightSum="4"
+    android:background="#423752">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/btn_horizontal_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="Has an active venue"
+        android:textColor="#ff0000"
+        android:layout_margin="10dp"
+        android:background="#00ff00"/>
+
+    <TextView
+        android:id="@+id/btn_horizontal_coordinator_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:background="#000000"
+        android:gravity="center"
+        android:text="Horizontal(Coordinator Layout) NavigationTabBar"
+        android:textColor="#ffffff"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/btn_horizontal_top_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Horizontal Top NavigationTabBar"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#1234ff"/>
+
+    <TextView
+        android:id="@+id/btn_vertical_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Vetical NavigationTabBar"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#9b92b3"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#ff2324"/>
+
+</LinearLayout>
+

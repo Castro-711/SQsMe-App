@@ -25,8 +25,8 @@
     </string-array>
 
     <string-array name="latlngs">
-        <item name="the_roost" lat="53.381078" lng="-6.592405"/>
-        <item name="bradys" lat="53.381596" lng="-6.590388"/>
+        <item name="the_roost" lat="53.381078" lng="-6.592405" />
+        <item name="bradys" lat="53.381596" lng="-6.590388" />
     </string-array>
 
     <string name="title_activity_maps">Map</string>
@@ -36,6 +36,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="registerMessage">
-        Would you like to register as an active customer to this Venue?
+        Would you be like to order some beers from this venue?
     </string>
 </resources>

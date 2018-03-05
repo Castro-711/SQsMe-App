@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@id/cheiftainImg"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_cheiftain"
             android:layout_width="match_parent"
             android:layout_height="300sp" />
 

@@ -39,6 +39,7 @@ public class CustomerHome extends AppCompatActivity
     private LocationManager locationManager;
     private String provider;
     private boolean hasPromptedCustomer;
+    private boolean customerHasVenue;
     private HashMap<String, LatLng> pubCoordinates;
 
 
@@ -50,17 +51,17 @@ public class CustomerHome extends AppCompatActivity
         toolbar.setBackgroundColor(Color.BLACK);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setBackgroundColor(Color.YELLOW);
-        fab.setImageResource(R.mipmap.beer_menu);
-        fab.setSize(10);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setBackgroundColor(Color.YELLOW);
+//        fab.setImageResource(R.mipmap.beer_menu);
+//        fab.setSize(10);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -90,7 +91,7 @@ public class CustomerHome extends AppCompatActivity
             return;
         }
         Location location = locationManager.getLastKnownLocation(provider);
-        hasPromptedCustomer = true;
+//        hasPromptedCustomer = true;
         setUpHashMap();
         onLocationChanged(location); // call to get it to act fast if user present at venue
 
@@ -250,8 +251,9 @@ public class CustomerHome extends AppCompatActivity
             Intent i = new Intent(CustomerHome.this, PopRegister.class);
             i.putExtra("pubName", pub);
 
-            if(results[0] < 30.0f){
-                hasPromptedCustomer = false;
+            if(results[0] < 30.0f && !hasPromptedCustomer
+                    && !customerHasVenue){
+                hasPromptedCustomer = true;
 
                 Log.i("pubName checkIfVenue", pub);
                 startActivity(i);

@@ -1,15 +1,13 @@
-package com.squeuesme.activities.fragments;
+package com.squeuesme.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.squeuesme.activities.R;
-
-public class FragmentTwo extends AppCompatActivity {
+public class OrderBuilder extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_two);
+        setContentView(R.layout.activity_order_builder);
     }
 }

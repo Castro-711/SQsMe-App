@@ -19,10 +19,8 @@
         <activity
             android:name=".OrderDrink"
             android:label="@string/title_activity_order_drink"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".fragments.FragmentOne" />
-        <activity android:name=".fragments.FragmentTwo" />
-        <activity android:name=".fragments.FragmentThree" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".PlaceOrder"
             android:windowSoftInputMode="stateHidden"> <!-- hides keyboard -->
@@ -49,16 +47,19 @@
         <activity
             android:name=".CustomerHome"
             android:label="SQsMe"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <activity android:name=".popup.PopRegister"
-            android:theme="@style/AppTheme.CustomTheme"/>
+        </activity>
+        <activity
+            android:name=".popup.PopRegister"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity android:name=".OrderBuilder"></activity>
     </application>
 
 </manifest>
