@@ -2,9 +2,12 @@ package com.squeuesme.activities.order;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +23,30 @@ import java.util.Map;
 import devlight.io.library.ntb.NavigationTabBar;
 
 import com.squeuesme.activities.R;
+import com.squeuesme.core.drink.Drink;
+import com.squeuesme.core.drink.Order;
 
 /**
  * Created by GIGAMOLE on 28.03.2016.
+ * Extended by Eric Cassells for sqsme app
+ *
+ * This class will contain the ui and func
+ * for the users to build, place, save orders
  */
-public class HorizontalNtbActivity extends Activity {
+
+public class OrderBuilderActivity extends Activity {
 
     private ImageView topImg;
 
     private Map<String, Integer> orderContents;
+
+    private Order order;
+    private ArrayList<String> orderString;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     // Beers
 
@@ -87,15 +105,38 @@ public class HorizontalNtbActivity extends Activity {
     private Button addIrvine;
     private Button removeIrvine;
 
+    // Minerals
+
+    private TextView cokeQ;
+    private TextView sevenupQ;
+    private TextView cluborangeQ;
+    private TextView schwepsQ;
+
+    private Button addCoke;
+    private Button removeCoke;
+
+    private Button add7up;
+    private Button remove7up;
+
+    private Button addClubOrange;
+    private Button removeClubOrange;
+
+    private Button addSchweps;
+    private Button removeSchweps;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_ntb);
 
         orderContents = new HashMap<>();
+        order = new Order();
+//        order.
 
         topImg = findViewById(R.id.topImage);
         initUI();
+        setupPhoneUI();
+
     }
 
     private void initUI() {
@@ -118,6 +159,44 @@ public class HorizontalNtbActivity extends Activity {
 
             @Override
             public Object instantiateItem(final ViewGroup container, final int position) {
+
+                if(position == 4){
+
+                    final View view = LayoutInflater.from(
+                            getBaseContext()).inflate(
+                            R.layout.complete_order, null, false);
+
+//
+//                    mRecyclerView = findViewById(R.id.orderListView);
+//
+//                    // use this setting to improve performance if you know that changes
+//                    // in content do not change the layout size of the RecyclerView
+//        mRecyclerView.setHasFixedSize(true);
+//
+//                    // use a linear layout manager
+//                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//                    mRecyclerView.setLayoutManager(mLayoutManager);
+//
+////         specify an adapter (see also next example)
+//                    orderString = new ArrayList<>();
+//                    mAdapter = new MyAdapter((String[]) orderString.toArray());
+//                    mRecyclerView.setAdapter(mAdapter);
+
+                    container.addView(view);
+                    return view;
+                }
+
+                if(position == 3){
+
+                    final View view = LayoutInflater.from(
+                            getBaseContext()).inflate(
+                            R.layout.activity_vp_minerals, null, false);
+
+                        setupButtonsListenersForMinerals(view);
+
+                    container.addView(view);
+                    return view;
+                }
 
                 if(position == 2){
 
@@ -162,12 +241,6 @@ public class HorizontalNtbActivity extends Activity {
                             getBaseContext()).inflate(
                                     R.layout.item_vp, null, false);
 
-
-
-                    final TextView txtPage = view.findViewById(R.id.txt_vp_item_page);
-                    if(position == 2)
-                        txtPage.setText(String.format("start new activity"));
-
                     container.addView(view);
                     return view;
 
@@ -177,7 +250,17 @@ public class HorizontalNtbActivity extends Activity {
 
         final String[] colors = getResources().getStringArray(R.array.default_preview);
 
+        Log.i("Colour + ", " -> " + colors[0]);
+        Log.i("Colour + ", " -> " + colors[1]);
+        Log.i("Colour + ", " -> " + colors[2]);
+        Log.i("Colour + ", " -> " + colors[3]);
+        Log.i("Colour + ", " -> " + colors[4]);
+
+
         final NavigationTabBar navigationTabBar = findViewById(R.id.ntb_horizontal);
+        navigationTabBar.setBgColor(Color.BLACK); // nav bar background
+        navigationTabBar.setInactiveColor(Color.parseColor("#404040"));
+        navigationTabBar.setActiveColor(Color.WHITE);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
@@ -206,7 +289,7 @@ public class HorizontalNtbActivity extends Activity {
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_eighth),
                         Color.parseColor(colors[3]))
-                        .title("Favourites")
+                        .title("Soft Drinks")
                         .build()
         );
         models.add(
@@ -502,11 +585,103 @@ public class HorizontalNtbActivity extends Activity {
         });
     }
 
+    private void setupButtonsListenersForMinerals(View view) {
+
+        // because these elements are in other layouts
+        // we must refer to the layout first
+        addCoke = view.findViewById(R.id.addCoke);
+        removeCoke = view.findViewById(R.id.removeCoke);
+
+        cokeQ = view.findViewById(R.id.coke_quantity);
+
+        addCoke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDrinkToOrder("Coke", cokeQ);
+            }
+        });
+
+        removeCoke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeDrinkFromOrder("Coke", cokeQ);
+            }
+        });
+
+
+        // because these elements are in other layouts
+        // we must refer to the layout first
+        add7up = view.findViewById(R.id.add7up);
+        remove7up = view.findViewById(R.id.remove7up);
+
+        sevenupQ = view.findViewById(R.id.seven_up_quantity);
+
+        add7up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDrinkToOrder("7up", sevenupQ);
+            }
+        });
+
+        remove7up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeDrinkFromOrder("7up", sevenupQ);
+            }
+        });
+
+
+        // because these elements are in other layouts
+        // we must refer to the layout first
+        addClubOrange = view.findViewById(R.id.addClubOrange);
+        removeClubOrange = view.findViewById(R.id.removeClubOrange);
+
+        cluborangeQ = view.findViewById(R.id.club_orange_quantity);
+
+        addClubOrange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDrinkToOrder("Club Orange", cluborangeQ);
+            }
+        });
+
+        removeClubOrange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeDrinkFromOrder("Club Orange", cluborangeQ);
+            }
+        });
+
+
+        // because these elements are in other layouts
+        // we must refer to the layout first
+        addSchweps = view.findViewById(R.id.addSchweps);
+        removeSchweps = view.findViewById(R.id.removeSchweps);
+
+        schwepsQ = view.findViewById(R.id.schweps_quantity);
+
+        addSchweps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDrinkToOrder("Schweppes", schwepsQ);
+            }
+        });
+
+        removeSchweps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeDrinkFromOrder("Schweppes", schwepsQ);
+            }
+        });
+    }
+
     public void addDrinkToOrder(String name, TextView quantity){
         int current = Integer.parseInt(quantity.getText().toString().substring(3) + "");
         quantity.setText(".x " + (current + 1));
 
         orderContents.put(name, current);
+        Drink latestDrink = new Drink(name, current);
+        order.addDrinkToOrder(latestDrink);
 
         Log.i("Order Contents", name + " -> " + String.valueOf(orderContents.get(name)));
     }
@@ -518,8 +693,16 @@ public class HorizontalNtbActivity extends Activity {
             quantity.setText(".x " + (current - 1));
             orderContents.put(name, current);
             Log.i("Order Contents", String.valueOf(orderContents.get(name)));
+            Drink latestDrink = new Drink(name, current);
+            order.removeDrinkFromOrder(latestDrink);
         }
 
+    }
+
+    public void setupPhoneUI(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.BLACK);
+        }
     }
 
 }

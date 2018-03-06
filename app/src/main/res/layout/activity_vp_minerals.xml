@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <LinearLayout
+        android:id="@+id/two"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_round_rect"
+        android:gravity="center"
+        android:text="Tab"
+        android:textColor="#9b92b3"
+        android:textStyle="bold">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:src="@mipmap/ic_coke"
+            android:textColor="#9b92b3"
+            android:textStyle="bold"/>
+
+
+        // no 1.1 --> Text
+        <LinearLayout
+            android:id="@+id/in_two_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:text="Tab"
+            android:textColor="#9b92b3"
+            android:textStyle="bold">
+
+            // no. 1.2 --> Text
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rect"
+                    android:gravity="left"
+                    android:text="Coke Cola"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/coke_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="#ffffff"
+                    android:text="x. 0"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/mineral_size"
+                android:textStyle="italic"
+                android:textColor="#dddddd"
+                android:gravity="left"/>
+
+            // no. 1.3 --> Buttons
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/removeCoke"
+                    android:text="x"
+                    android:textSize="20dp"
+                    android:textColor="#ff0000"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/addCoke"
+                    android:text="+"
+                    android:textSize="30dp"
+                    android:textColor="#00ff00"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/one"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_round_rect"
+        android:gravity="center"
+        android:text="Tab"
+        android:textColor="#9b92b3"
+        android:textStyle="bold">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:src="@mipmap/ic_7up"
+            android:textColor="#9b92b3"
+            android:textStyle="bold"/>
+
+
+        // no 1.1 --> Text
+        <LinearLayout
+            android:id="@+id/in_one_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:text="Tab"
+            android:textColor="#9b92b3"
+            android:textStyle="bold">
+
+            // no. 1.2 --> Text
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rect"
+                    android:gravity="left"
+                    android:text="7up"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/seven_up_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="#ffffff"
+                    android:text="x. 0"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/mineral_size"
+                android:textStyle="italic"
+                android:textColor="#dddddd"
+                android:gravity="left"/>
+
+            // no. 1.3 --> Buttons
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/remove7up"
+                    android:text="x"
+                    android:textSize="20dp"
+                    android:textColor="#ff0000"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/add7up"
+                    android:text="+"
+                    android:textSize="30dp"
+                    android:textColor="#00ff00"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    // no. 3
+    // no. 2 --> Frame
+
+    <LinearLayout
+        android:id="@+id/three"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_round_rect"
+        android:gravity="center"
+        android:text="Tab"
+        android:textColor="#9b92b3"
+        android:textStyle="bold">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:src="@mipmap/ic_cluborange"
+            android:textColor="#9b92b3"
+            android:textStyle="bold"/>
+
+
+        // no 1.1 --> Text
+        <LinearLayout
+            android:id="@+id/heineken_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:text="Tab"
+            android:textColor="#9b92b3"
+            android:textStyle="bold">
+
+            // no. 1.2 --> Text
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rect"
+                    android:gravity="left"
+                    android:text="Club Orange"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/club_orange_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="#ffffff"
+                    android:text="x. 0"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/mineral_size"
+                android:textStyle="italic"
+                android:textColor="#dddddd"
+                android:gravity="left"/>
+
+            // no. 1.3 --> Buttons
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/removeClubOrange"
+                    android:text="x"
+                    android:textSize="20dp"
+                    android:textColor="#ff0000"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/addClubOrange"
+                    android:text="+"
+                    android:textSize="30dp"
+                    android:textColor="#00ff00"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    // no. 4
+
+    // no. 2 --> Frame
+
+    <LinearLayout
+        android:id="@+id/four"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_round_rect"
+        android:gravity="center"
+        android:text="Tab"
+        android:textColor="#9b92b3"
+        android:textStyle="bold">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:src="@mipmap/ic_schweppes"
+            android:textColor="#9b92b3"
+            android:textStyle="bold"/>
+
+
+        // no 1.1 --> Text
+        <LinearLayout
+            android:id="@+id/tuborg"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_round_rect"
+            android:gravity="center"
+            android:text="Tab"
+            android:textColor="#9b92b3"
+            android:textStyle="bold">
+
+            // no. 1.2 --> Text
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_round_rect"
+                    android:gravity="left"
+                    android:text="Schweppes"
+                    android:textSize="16dp"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/schweps_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:textColor="#ffffff"
+                    android:text="x. 0"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/mineral_size"
+                android:textStyle="italic"
+                android:textColor="#dddddd"
+                android:gravity="left"/>
+
+            // no. 1.3 --> Buttons
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/removeSchweps"
+                    android:text="x"
+                    android:textSize="20dp"
+                    android:textColor="#ff0000"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:id="@+id/addSchweps"
+                    android:text="+"
+                    android:textSize="30dp"
+                    android:textColor="#00ff00"
+                    android:background="@drawable/bg_round_rect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

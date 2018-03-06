@@ -60,6 +60,10 @@
             android:name=".popup.PopRegister"
             android:theme="@style/AppTheme.CustomTheme" />
         <activity android:name=".OrderBuilder"></activity>
+
+        <activity android:name=".order.OrderBuilderActivity">
+
+        </activity>
     </application>
 
 </manifest>
