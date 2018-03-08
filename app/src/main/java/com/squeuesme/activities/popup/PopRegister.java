@@ -1,7 +1,9 @@
 package com.squeuesme.activities.popup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -60,10 +62,9 @@ public class PopRegister extends Activity {
         pubIcon = findViewById(R.id.pubImage);
 
         register = findViewById(R.id.btnRegister);
-//        unRegister = findViewById(R.id.btnNotReg);
 
         Intent i = getIntent();
-        String pubName = i.getStringExtra("pubName");
+        final String pubName = i.getStringExtra("pubName");
 
         Log.i("Pub Name", pubName);
 
@@ -88,6 +89,12 @@ public class PopRegister extends Activity {
                  * connect him to the venue by getting the venue information
                  */
 
+                Venue venue = new Venue(pubName);
+
+                Customer customer = new Customer();
+                customer.setActiveVenue(venue);
+
+                changeUserStatus("activeVenue", venue.getName());
 
             }
         });
@@ -103,6 +110,30 @@ public class PopRegister extends Activity {
 //            }
 //        });
 
+    }
+
+    public void changeUserStatus(String _key, String _value){
+        // set the value of the sharedPreferences
+
+        /**
+         * These can store small amounts of data:
+         * arrays and variables.
+         * Usually used for customizations in the app.
+         *
+         * This is stored permanently and is quite handy.
+         * comment out the line that adds the string
+         * to prove it works.
+         */
+
+        SharedPreferences sharedPreferences =
+                this.getSharedPreferences("com.squeuesme.core",
+                        Context.MODE_PRIVATE);
+
+        sharedPreferences.edit().putString(_key, _value).apply();
+
+        String username = sharedPreferences.getString("activeVenue", "");
+
+        Log.i(_key, username);
     }
 
     public void setCorrectPopUpInfo(String _pubName){

@@ -17,11 +17,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".OrderDrink"
-            android:label="@string/title_activity_order_drink"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".PlaceOrder"
             android:windowSoftInputMode="stateHidden"> <!-- hides keyboard -->
         </activity>
@@ -59,7 +54,6 @@
         <activity
             android:name=".popup.PopRegister"
             android:theme="@style/AppTheme.CustomTheme" />
-        <activity android:name=".OrderBuilder"></activity>
 
         <activity android:name=".order.OrderBuilderActivity">
 

@@ -7,6 +7,7 @@ import com.squeuesme.core.venue.OrdersBoard;
 import com.squeuesme.core.venue.Venue;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * This class is to represent customers that will
@@ -25,8 +26,8 @@ public class Customer extends User
     private ArrayList<Drink> favourites;
     private ArrayList<Order> orderHistory;
 
-    public Customer(String _uniqueId){
-        super(_uniqueId);
+    public Customer(){
+        super(UUID.randomUUID().toString());
         init();
     }
 

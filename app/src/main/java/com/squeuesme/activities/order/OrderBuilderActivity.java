@@ -1,9 +1,12 @@
 package com.squeuesme.activities.order;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -22,9 +29,16 @@ import java.util.Map;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squeuesme.activities.R;
 import com.squeuesme.core.drink.Drink;
 import com.squeuesme.core.drink.Order;
+import com.squeuesme.core.user.Customer;
+import com.squeuesme.core.venue.Venue;
 
 /**
  * Created by GIGAMOLE on 28.03.2016.
@@ -36,17 +50,37 @@ import com.squeuesme.core.drink.Order;
 
 public class OrderBuilderActivity extends Activity {
 
+    private FirebaseDatabase db;
+    private DatabaseReference activeRef;
+    private DatabaseReference completeRef;
+
+    private Customer customer;
+    private Venue venue; // get venue by location
+    private String orderString;
+
+    private EditText drinkName;
+    private EditText drinkQuan;
+    private Button addTo;
+    private Button makeOrder;
+
+    private LinearLayout colour;
+    private TextView textView;
+
     private ImageView topImg;
 
     private Map<String, Integer> orderContents;
 
     private Order order;
-    private ArrayList<String> orderString;
+
+    private ListView orderList;
+    private String[] orderArray;
+    private int currentDrinkNum;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private boolean positionFourInflated;
 
     // Beers
 
@@ -129,9 +163,13 @@ public class OrderBuilderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_ntb);
 
+        setupDBForOrders();
+        setupDBReferenceListeners();
+
         orderContents = new HashMap<>();
         order = new Order();
-//        order.
+        orderArray = new String[15];
+        mAdapter = new MyAdapter(orderArray);
 
         topImg = findViewById(R.id.topImage);
         initUI();
@@ -166,21 +204,41 @@ public class OrderBuilderActivity extends Activity {
                             getBaseContext()).inflate(
                             R.layout.complete_order, null, false);
 
-//
-//                    mRecyclerView = findViewById(R.id.orderListView);
-//
-//                    // use this setting to improve performance if you know that changes
-//                    // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-//
-//                    // use a linear layout manager
-//                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//                    mRecyclerView.setLayoutManager(mLayoutManager);
-//
-////         specify an adapter (see also next example)
-//                    orderString = new ArrayList<>();
-//                    mAdapter = new MyAdapter((String[]) orderString.toArray());
-//                    mRecyclerView.setAdapter(mAdapter);
+
+                    mRecyclerView = view.findViewById(R.id.orderListView);
+
+                    // use this setting to improve performance if you know that changes
+                    // in content do not change the layout size of the RecyclerView
+                    mRecyclerView.setHasFixedSize(true);
+
+                    // use a linear layout manager
+                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+
+                    // specify an adapter (see also next example)
+                    orderString = "";
+                    mRecyclerView.setAdapter(mAdapter);
+
+                    Button saveOrder = view.findViewById(R.id.btnSaveOrder);
+
+                        saveOrder.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                        public void onClick(View v) {
+                            saveOrder(order.toString(), "first");
+                            Log.i("Saving the order:", order.toString());
+                        }
+                    });
+
+                    Button placeOrder =  view.findViewById(R.id.btnPlaceOrder);
+
+                    placeOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            placeCurrentOrder();
+                        }
+                    });
+
+
 
                     container.addView(view);
                     return view;
@@ -193,6 +251,12 @@ public class OrderBuilderActivity extends Activity {
                             R.layout.activity_vp_minerals, null, false);
 
                         setupButtonsListenersForMinerals(view);
+
+                    if(orderContents.containsKey("coke"))
+                        cokeQ.setText( orderContents.get("Coke"));
+
+
+                    positionFourInflated = true;
 
                     container.addView(view);
                     return view;
@@ -594,6 +658,10 @@ public class OrderBuilderActivity extends Activity {
 
         cokeQ = view.findViewById(R.id.coke_quantity);
 
+        for(int i = 0; i < orderArray.length; i++)
+            if(orderArray[i] != null && orderArray[i].contains("Coke"))
+                cokeQ.setText(orderArray[i].substring(orderArray[i].length() - 2));
+
         addCoke.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -679,9 +747,25 @@ public class OrderBuilderActivity extends Activity {
         int current = Integer.parseInt(quantity.getText().toString().substring(3) + "");
         quantity.setText(".x " + (current + 1));
 
+        if(current == 0){
+            orderArray[currentDrinkNum] = name + "\t\t" + ".x " + (current + 1);
+            mAdapter.notifyDataSetChanged();
+            currentDrinkNum++;
+        }
+        else{
+            for(int i = 0; i < currentDrinkNum; i++)
+                if(orderArray[i].contains(name)){
+                    orderArray[i] = name + "\t\t" + ".x " + (current + 1);
+                    mAdapter.notifyDataSetChanged();
+                }
+        }
+
         orderContents.put(name, current);
-        Drink latestDrink = new Drink(name, current);
-        order.addDrinkToOrder(latestDrink);
+
+        if(orderContents.containsKey(name))
+            Log.i("Contains", name);
+
+//            order.increaseQuantityOfDrinkOnOrder(new Drink(name), current);
 
         Log.i("Order Contents", name + " -> " + String.valueOf(orderContents.get(name)));
     }
@@ -703,6 +787,131 @@ public class OrderBuilderActivity extends Activity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.BLACK);
         }
+    }
+
+    /**
+     * This method is to save a customers order that they can later
+     * quickly retrieve and place it again from the home screen.
+     * @param _order
+     * @param _name
+     */
+
+    public void saveOrder(String _order, String _name){
+
+        try{
+
+            SQLiteDatabase db = this.openOrCreateDatabase("orders", MODE_PRIVATE, null);
+
+            // create a table
+            // android studio does not parse the sql, so errors only appear at runtime
+            db.execSQL("CREATE TABLE IF NOT EXISTS orders (name VARCHAR, id INT(3), contents VARCHAR)");
+
+            db.execSQL("INSERT INTO orders (name, id, contents) " +
+                    "VALUES ('Favourite 1', 123, '[\n\t{ name:jameson \n\t}\n\t] ')");
+
+
+            Log.i("SQL: ", getOrder());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public String getOrder(){
+
+        // to get the data out of the db
+        // a cursor allows us to loop through all the data
+
+        // can use WHERE, AND, LIKE, LIMIT to improve query types
+        // WHERE name = Ryan
+        // WHERE name = Ryan AND age < 20
+        // WHERE name LIKE "R%" - results names beginning with R
+        // LIMIT will limit the number of results returned
+        // LIMIT is very useful when using delete statements
+        SQLiteDatabase db = this.openOrCreateDatabase("orders", MODE_PRIVATE, null);
+
+        // DELETE FROM users WHERE name = 'Eric' LIMIT 1
+        // UPDATE users SET age = 20 WHERE name = 'Ryan'
+        Cursor c = db.rawQuery("SELECT * FROM orders", null);
+
+        // get the column indexes - different to mysql
+        int nameIndex = c.getColumnIndex("name");
+        int idIndex = c.getColumnIndex("id");
+        int contentIndex = c.getColumnIndex("contents");
+
+        ArrayList<Order> orders = new ArrayList<>();
+
+        // move to first result
+        c.moveToFirst();
+        while(c != null){
+
+            Log.i("Name", c.getString(nameIndex));
+            Log.i("Id", c.getString(idIndex) + "");
+            Log.i("Contents", c.getString(contentIndex) + "");
+
+            orders.add(new Order(c.getString(idIndex)));
+
+            // move to next result
+            c.moveToNext();
+        }
+
+        return orders.toString();
+    }
+
+    public void setupDBForOrders(){
+        db = FirebaseDatabase.getInstance();
+        activeRef = db.getReference("ActiveOrders");
+        completeRef = db.getReference("CompletedOrders");
+    }
+
+    public void setupDBReferenceListeners(){
+
+        completeRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                String order = (String) dataSnapshot.getValue();
+
+                if(getCustomerId(order).equals(customer.getUniqueId()))
+                    textView.setText(order);
+
+                Log.i("Customer Id", getCustomerId(order));
+                Log.i("Unique Id", customer.getUniqueId());
+
+                Log.i("Completed it", dataSnapshot.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public String getCustomerId(String _string){
+        String[] split = _string.split("\t");
+
+        return split[1];
+    }
+
+    public void placeCurrentOrder() {
+        activeRef.push().setValue(order.toString());
     }
 
 }

@@ -9,11 +9,10 @@ import java.io.Serializable;
  * Created by castro on 27/01/18.
  */
 
-public class Drink implements Serializable
+public class Drink
 {
     private String name;
     private int quantity;
-
 
     private String brewer;
     private String type;

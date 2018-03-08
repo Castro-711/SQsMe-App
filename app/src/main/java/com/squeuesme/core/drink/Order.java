@@ -1,6 +1,7 @@
 package com.squeuesme.core.drink;
 
-import java.io.Serializable;
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -9,13 +10,14 @@ import java.util.ArrayList;
  * on the OrdersBoard of the given venue.
  */
 
-public class Order implements Serializable
+public class Order
 {
     private static int orderCount;
     private int currentOrderNum;
+    private String current;
     private String orderId;
     private String customerId;
-    private ArrayList<Drink> currentOrder;
+    private ArrayList<String> currentOrder;
     private ArrayList<Integer> quantity;
 
     /* CONSTRUCTORS */
@@ -27,17 +29,17 @@ public class Order implements Serializable
      */
 
     public Order(){
-        currentOrder = new ArrayList<>();
+        currentOrder = new ArrayList<String>();
         currentOrderNum = orderCount++;
     }
 
     public Order(String _customerId){
         customerId = _customerId;
-        currentOrder = new ArrayList<>();
+        currentOrder = new ArrayList<String>();
         currentOrderNum = orderCount++;
     }
 
-    public Order(String _customerId, ArrayList<Drink> _currentOrder){
+    public Order(String _customerId, ArrayList<String> _currentOrder){
         customerId = _customerId;
         currentOrder = _currentOrder;
         currentOrderNum = orderCount++;
@@ -61,11 +63,11 @@ public class Order implements Serializable
         customerId = _customerId;
     }
 
-    public ArrayList<Drink> getCurrentOrder() {
+    public ArrayList<String> getCurrentOrder() {
         return currentOrder;
     }
 
-    public void setCurrentOrder(ArrayList<Drink> currentOrder) {
+    public void setCurrentOrder(ArrayList<String> currentOrder) {
         this.currentOrder = currentOrder;
     }
 
@@ -81,9 +83,14 @@ public class Order implements Serializable
         return orderCount;
     }
 
-    public void addDrinkToOrder(Drink _drink){
-        currentOrder.add(_drink);
+    public void addDrinkToOrder(String _drink) {
+        currentOrder.add(_drink.toString());
+        Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
     }
+
+//    public void increaseQuantityOfDrinkOnOrder(Drink _drink, int quantity){
+//        currentOrder.get(currentOrder.indexOf(_drink)).setQuantity(quantity);
+//    }
 
     public void removeDrinkFromOrder(Drink _drink){
         currentOrder.remove(_drink);
@@ -92,7 +99,7 @@ public class Order implements Serializable
     public ArrayList<String> getOrderAsStringArrayList(){
         ArrayList<String> order = new ArrayList<>();
 
-        for(Drink d: currentOrder)
+        for(String d: currentOrder)
             order.add(d.toString());
 
         return order;
@@ -102,8 +109,10 @@ public class Order implements Serializable
     public String toString()
     {
         String toReturn = "Order " + (currentOrderNum + 1) + ": \n";
-        for(Drink d: currentOrder)
+        for(String d: currentOrder){
             toReturn += d.toString();
+        }
+
 
         return toReturn;
     }

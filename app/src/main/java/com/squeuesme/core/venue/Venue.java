@@ -34,6 +34,10 @@ public class Venue implements Observer
 
     /* CONSTRUCTORS */
 
+    public Venue(String _name){
+        setName(_name);
+    }
+
     public Venue(String _name, String _address, OrdersBoard _ordersBoard){
         // set arguments
         setName(_name);

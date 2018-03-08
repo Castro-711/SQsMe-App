@@ -9,7 +9,7 @@ fab button within the customer home activity -->
     android:orientation="vertical"
     android:layout_marginTop="50dp"
     android:weightSum="4"
-    android:background="#423752">
+    android:background="#404040">
 
     <TextView
         android:id="@+id/btn_horizontal_ntb"

@@ -1,167 +1,35 @@
 {
   "project_info": {
-    "project_number": "740551293886",
-    "firebase_url": "https://sqsme-funknebula.firebaseio.com",
-    "project_id": "sqsme-funknebula",
-    "storage_bucket": "sqsme-funknebula.appspot.com"
+    "project_number": "433286658556",
+    "firebase_url": "https://sqsme-co.firebaseio.com",
+    "project_id": "sqsme-co",
+    "storage_bucket": "sqsme-co.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:740551293886:android:f85962304828a852",
-        "android_client_info": {
-          "package_name": "funknebula.sqsme"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "740551293886-ssgnc8kaa2ru4kb8kgrhteccv9s5ht7j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "funknebula.sqsme",
-            "certificate_hash": "2514c769f48299c323dc1eba137d77aa58864f4b"
-          }
-        },
-        {
-          "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCrRNtksKAItao6umRFB2mOo6yX0MnMiHs"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:740551293886:android:7502bd14341e4497",
-        "android_client_info": {
-          "package_name": "com.funknebula"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "740551293886-ggqc26t1ds501nf3p0gt30fto3na6sp3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.funknebula",
-            "certificate_hash": "48e6268637c55659905748c0753ba6a2f1dcc6f9"
-          }
-        },
-        {
-          "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCrRNtksKAItao6umRFB2mOo6yX0MnMiHs"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:740551293886:android:5ae5cd1e38f7fe01",
-        "android_client_info": {
-          "package_name": "com.funknebula.sqsme"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "740551293886-r4gm4gdb7otk7n5roh8r3mi203nld0ob.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.funknebula.sqsme",
-            "certificate_hash": "48e6268637c55659905748c0753ba6a2f1dcc6f9"
-          }
-        },
-        {
-          "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCrRNtksKAItao6umRFB2mOo6yX0MnMiHs"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:740551293886:android:9808fec73b266b3c",
+        "mobilesdk_app_id": "1:433286658556:android:9272943f8ab4b807",
         "android_client_info": {
           "package_name": "com.squeuesme"
         }
       },
       "oauth_client": [
         {
-          "client_id": "740551293886-kdjb6v756r87rfhrjuebho545ftocmb1.apps.googleusercontent.com",
+          "client_id": "433286658556-c6fdvjsg2nv78q6g1c8v90r9e5fcqkd3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.squeuesme",
+            "package_name": "com.squeuesme.core",
             "certificate_hash": "48e6268637c55659905748c0753ba6a2f1dcc6f9"
           }
         },
         {
-          "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
+          "client_id": "433286658556-59ld6k7roc6bakh4otug2bra4naa2ea8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCrRNtksKAItao6umRFB2mOo6yX0MnMiHs"
+          "current_key": "AIzaSyDlyqpMbTRkxmoFI7jFEAbFgcZjvK4Eflw"
         }
       ],
       "services": {
@@ -172,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "740551293886-sab239oedj9b7ol25004jg4dujmb5i8h.apps.googleusercontent.com",
+              "client_id": "433286658556-59ld6k7roc6bakh4otug2bra4naa2ea8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

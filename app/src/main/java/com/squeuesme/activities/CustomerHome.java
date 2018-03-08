@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -20,12 +23,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.squeuesme.activities.map.MapsActivity;
 import com.squeuesme.activities.order.OrderBuilderActivity;
 import com.squeuesme.activities.popup.PopRegister;
+import com.squeuesme.core.drink.Order;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,6 +61,11 @@ public class CustomerHome extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        TextView tv  = findViewById(R.id.btn_horizontal_ntb);
+//        tv.setText(getOrder());
+
+//        getOrder();
+
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setBackgroundColor(Color.BLACK);
@@ -74,6 +85,7 @@ public class CustomerHome extends AppCompatActivity
         setUpHashMap();
         onLocationChanged(location); // call to get it to act fast if user present at venue
 
+        setupPhoneUI();
     }
 
     public void setUpHashMap(){
@@ -100,13 +112,17 @@ public class CustomerHome extends AppCompatActivity
 
         Menu menu = navigationView.getMenu();
 
-        MenuItem nearbyVenue = menu.findItem(R.id.nav_camera);
-        nearbyVenue.setTitle("Nearby Venue");
-        nearbyVenue.setIcon(R.drawable.menu_venue);
+        MenuItem orderBuilder = menu.findItem(R.id.nav_camera);
+        orderBuilder.setTitle("Order Builder");
+        orderBuilder.setIcon(R.drawable.menu_venue);
 
         MenuItem favourites = menu.findItem(R.id.nav_gallery);
         favourites.setTitle("Favourites");
         favourites.setIcon(R.drawable.favourites_ic);
+
+        MenuItem nearbyVenue = menu.findItem(R.id.nav_slideshow);
+        nearbyVenue.setTitle("Nearby Venues");
+        nearbyVenue.setIcon(R.mipmap.ic_map);
 
     }
 
@@ -149,11 +165,11 @@ public class CustomerHome extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            startActivity(new Intent(CustomerHome.this, MapsActivity.class));
+            startActivity(new Intent(CustomerHome.this, OrderBuilderActivity.class));
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(CustomerHome.this, OrderBuilderActivity.class));
+            startActivity(new Intent(CustomerHome.this, MapsActivity.class));
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -248,5 +264,53 @@ public class CustomerHome extends AppCompatActivity
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+
+    public void setupPhoneUI(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.BLACK);
+        }
+    }
+
+    public String getOrder(){
+
+        // to get the data out of the db
+        // a cursor allows us to loop through all the data
+
+        // can use WHERE, AND, LIKE, LIMIT to improve query types
+        // WHERE name = Ryan
+        // WHERE name = Ryan AND age < 20
+        // WHERE name LIKE "R%" - results names beginning with R
+        // LIMIT will limit the number of results returned
+        // LIMIT is very useful when using delete statements
+        SQLiteDatabase db = this.openOrCreateDatabase("orders", MODE_PRIVATE, null);
+
+        // DELETE FROM users WHERE name = 'Eric' LIMIT 1
+        // UPDATE users SET age = 20 WHERE name = 'Ryan'
+        Cursor c = db.rawQuery("SELECT * FROM orders", null);
+
+        // get the column indexes - different to mysql
+        int nameIndex = c.getColumnIndex("name");
+        int idIndex = c.getColumnIndex("id");
+        int contentIndex = c.getColumnIndex("contents");
+
+        ArrayList<Order> orders = new ArrayList<>();
+
+        // move to first result
+        c.moveToFirst();
+        while(c != null){
+
+            Log.i("Name", c.getString(nameIndex) + "");
+            Log.i("Id", c.getString(idIndex) + "");
+            Log.i("Contents", c.getString(contentIndex) + "");
+
+            orders.add(new Order(c.getString(idIndex)));
+
+            // move to next result
+            c.moveToNext();
+        }
+
+        return orders.toString();
     }
 }

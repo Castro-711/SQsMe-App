@@ -1,9 +1,7 @@
 package com.squeuesme.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +15,6 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squeuesme.activities.R;
 import com.squeuesme.core.drink.Drink;
 import com.squeuesme.core.drink.Order;
 import com.squeuesme.core.user.Customer;
@@ -97,7 +94,7 @@ public class PlaceOrder extends AppCompatActivity {
         venue = new Venue("Boomers", "Woodford", ordersBoard);
         ordersBoard.registerObserver(venue);
 
-        customer = new Customer("12345");
+        customer = new Customer();
 
         venue.addNewActiveCustomer(customer);
 
@@ -201,7 +198,7 @@ public class PlaceOrder extends AppCompatActivity {
 
                 // create and add drink to order
                 Drink current = new Drink(drinkNameString, drinkQuantityInt);
-                currentOrder.addDrinkToOrder(current);
+                currentOrder.addDrinkToOrder(drinkNameString);
                 // add it to listItems, so reflected on listView
                 listItems.add(current.toString());
                 adapter.notifyDataSetChanged();
@@ -302,7 +299,7 @@ public class PlaceOrder extends AppCompatActivity {
 
     public Customer getActiveCustomer(Customer _customer){
         if(_customer == null)
-            customer = new Customer("12345");
+            customer = new Customer();
         else
             customer = _customer;
 
