@@ -285,39 +285,41 @@ public class OrderBuilderActivity extends Activity {
         // add the models to the nav bar
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_eighth),
+                        getResources().getDrawable(R.mipmap.ic_wine),
                         Color.parseColor(colors[0]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_sixth))
+                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_wine))
                         .title("Wines")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_second),
+                        getResources().getDrawable(R.mipmap.ic_spirits_small),
                         Color.parseColor(colors[1]))
+                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_spirits_small))
                         .title("Spirits")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_third),
+                        getResources().getDrawable(R.mipmap.ic_beer),
                         Color.parseColor(colors[2]))
-                        .selectedIcon(getResources().getDrawable(R.drawable.ic_seventh))
+                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_beer))
                         .title("Beers")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_eighth),
+                        getResources().getDrawable(R.mipmap.ic_softdrink),
                         Color.parseColor(colors[3]))
+                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_softdrink))
                         .title("Soft Drinks")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_fifth),
+                        getResources().getDrawable(R.mipmap.ic_cashreg),
                         Color.parseColor(colors[4]))
-                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_euro))
+                        .selectedIcon(getResources().getDrawable(R.mipmap.ic_cashreg))
                         .title("Order")
                         .build()
         );
@@ -755,8 +757,8 @@ public class OrderBuilderActivity extends Activity {
 
         schwepsQ = view.findViewById(R.id.schweps_quantity);
 
-        if(orderContents.containsKey("Schweppes"))
-            schwepsQ.setText("x. " + ((int) orderContents.get("Schweppes") + 1));
+        if(order.getDrinks().containsKey("Schweppes"))
+            schwepsQ.setText("x. " + (int) order.getDrinks().get("Schweppes"));
 
         addSchweps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -779,6 +781,7 @@ public class OrderBuilderActivity extends Activity {
 
         order.addDrinkAndQuantityToOrder(name, (current + 1));
 
+        // orderArray is used to populate the list at the final tabbed page
         if(current == 0){
             orderArray[currentDrinkNum] = name + "\t\t" + ".x " + (current + 1);
             mAdapter.notifyDataSetChanged();
@@ -792,25 +795,39 @@ public class OrderBuilderActivity extends Activity {
                 }
         }
 
-        orderContents.put(name, current);
 
-        if(orderContents.containsKey(name))
-            Log.i("Contains", name);
-
-//            order.increaseQuantityOfDrinkOnOrder(new Drink(name), current);
-
-        Log.i("Order Contents", name + " -> " + String.valueOf(orderContents.get(name)));
+        Log.i("Order Contents", name + " -> " +
+                String.valueOf(order.getDrinks().get(name)));
     }
 
     public void removeDrinkFromOrder(String name, TextView quantity){
         int current = Integer.parseInt(quantity.getText().toString().substring(3)  + "");
 
-        if(current > 0){
+
+        if(current == 1)
+        { // this is to remove the x.0 from the list
+            for(int i = 0; i < currentDrinkNum; i++)
+                if(orderArray[i].contains(name)){
+                    // swap last drink with one removed
+                    orderArray[i] = orderArray[currentDrinkNum - 1]; // move last in
+                    orderArray[currentDrinkNum - 1] = ""; // reset the last drink
+                    --currentDrinkNum; // reduce count
+                    quantity.setText(".x " + (current - 1));
+                    mAdapter.notifyDataSetChanged();
+                }
+        }
+
+        else if(current > 0)
+        {
             quantity.setText(".x " + (current - 1));
-            orderContents.put(name, current);
-            Log.i("Order Contents", String.valueOf(orderContents.get(name)));
-            Drink latestDrink = new Drink(name, current);
-            order.removeDrinkFromOrder(latestDrink);
+            order.getDrinks().put(name, current);
+//            order.decreaseQuantityOfDrink(name);
+
+            for(int i = 0; i < currentDrinkNum; i++)
+                if(orderArray[i].contains(name)){
+                    orderArray[i] = name + "\t\t" + ".x " + (current - 1);
+                    mAdapter.notifyDataSetChanged();
+                }
         }
 
     }

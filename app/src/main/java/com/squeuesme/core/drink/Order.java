@@ -78,6 +78,10 @@ public class Order
         return orderCount;
     }
 
+    public Map<String, Integer> getDrinks(){
+        return orderMap;
+    }
+
     public void addDrinkToOrder(String _drink) {
         currentOrder.add(_drink.toString());
         Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
@@ -87,6 +91,16 @@ public class Order
         orderMap.put(_drink, _quantity);
         currentOrder.add(_drink.toString());
         Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
+    }
+
+    public void decreaseQuantityOfDrink(String _drink){
+        if(orderMap.get(_drink) > 0)
+            orderMap.put(_drink, orderMap.get(_drink) - 1);
+        else
+        {
+            orderMap.remove(_drink);
+            currentOrder.remove(_drink);
+        }
     }
 
 //    public void increaseQuantityOfDrinkOnOrder(Drink _drink, int quantity){
@@ -104,6 +118,20 @@ public class Order
             order.add(d.toString());
 
         return order;
+    }
+
+    public String[] orderAsAnArray(){
+        String[] array = new String[20];
+        int i = 0;
+
+        for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+
+            array[i] = key + "\t\tx. " + value;
+            i++;
+        }
+        return array;
     }
 
     public String toJsonString()
