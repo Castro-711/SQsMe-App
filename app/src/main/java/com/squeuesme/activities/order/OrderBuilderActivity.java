@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,12 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -69,10 +66,7 @@ public class OrderBuilderActivity extends Activity {
     private ImageView topImg;
 
     private Map<String, Integer> orderContents;
-
     private Order order;
-
-    private ListView orderList;
     private String[] orderArray;
     private int currentDrinkNum;
 
@@ -83,80 +77,36 @@ public class OrderBuilderActivity extends Activity {
     private boolean positionFourInflated;
 
     // Beers
+    private TextView cheiftainQuantity, coorsQuantity, heinekenQuantity, tuborgQuantity;
 
-    private TextView cheiftainQuantity;
-    private TextView coorsQuantity;
-    private TextView heinekenQuantity;
-    private TextView tuborgQuantity;
-
-    private Button addCheiftain;
-    private Button removeCheiftain;
-
-    private Button addCoors;
-    private Button removeCoors;
-
-    private Button addHeineken;
-    private Button removeHeineken;
-
-    private Button addTuborg;
-    private Button removeTuborg;
+    private Button addCheiftain, removeCheiftain;
+    private Button addCoors, removeCoors;
+    private Button addHeineken, removeHeineken;
+    private Button addTuborg, removeTuborg;
 
     // Spirits
+    private TextView jamesonQ, smirnoffQ, jdQ, captainsQ;
 
-    private TextView jamesonQ;
-    private TextView smirnoffQ;
-    private TextView jdQ;
-    private TextView captainsQ;
-
-    private Button addJameson;
-    private Button removeJameson;
-
-    private Button addSmirnoff;
-    private Button removeSmrinoff;
-
-    private Button addJd;
-    private Button removeJd;
-
-    private Button addCaptains;
-    private Button removeCaptains;
+    private Button addJameson, removeJameson;
+    private Button addSmirnoff, removeSmrinoff;
+    private Button addJd, removeJd;
+    private Button addCaptains, removeCaptains;
 
     // Wines
+    private TextView nobiloQ, yellowQ, ningxiaQ, irvineQ;
 
-    private TextView nobiloQ;
-    private TextView yellowQ;
-    private TextView ningxiaQ;
-    private TextView irvineQ;
-
-    private Button addNobilo;
-    private Button removeNobilo;
-
-    private Button addYellow;
-    private Button removeYellow;
-
-    private Button addNingxia;
-    private Button removeNingxia;
-
-    private Button addIrvine;
-    private Button removeIrvine;
+    private Button addNobilo, removeNobilo;
+    private Button addYellow, removeYellow;
+    private Button addNingxia, removeNingxia;
+    private Button addIrvine,  removeIrvine;
 
     // Minerals
+    private TextView cokeQ, sevenupQ, cluborangeQ, schwepsQ;
 
-    private TextView cokeQ;
-    private TextView sevenupQ;
-    private TextView cluborangeQ;
-    private TextView schwepsQ;
-
-    private Button addCoke;
-    private Button removeCoke;
-
-    private Button add7up;
-    private Button remove7up;
-
-    private Button addClubOrange;
-    private Button removeClubOrange;
-
-    private Button addSchweps;
-    private Button removeSchweps;
+    private Button addCoke, removeCoke;
+    private Button add7up, remove7up;
+    private Button addClubOrange, removeClubOrange;
+    private Button addSchweps, removeSchweps;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -168,12 +118,13 @@ public class OrderBuilderActivity extends Activity {
 
         orderContents = new HashMap<>();
         order = new Order();
-        orderArray = new String[15];
+        orderArray = new String[16];
         mAdapter = new MyAdapter(orderArray);
 
         topImg = findViewById(R.id.topImage);
         initUI();
         setupPhoneUI();
+
 
     }
 
@@ -198,6 +149,11 @@ public class OrderBuilderActivity extends Activity {
             @Override
             public Object instantiateItem(final ViewGroup container, final int position) {
 
+//                if(orderArray[0] != null)
+//                    for(int i = 0; i < orderArray.length; i++)
+//                        if(orderContents.containsKey(orderArray[i]))
+//                            cokeQ.setText("x. " + orderContents.get(orderArray[i]) + 1);
+
                 if(position == 4){
 
                     final View view = LayoutInflater.from(
@@ -215,7 +171,7 @@ public class OrderBuilderActivity extends Activity {
                     mLayoutManager = new LinearLayoutManager(getApplicationContext());
                     mRecyclerView.setLayoutManager(mLayoutManager);
 
-                    // specify an adapter (see also next example)
+                    // specify an adapter
                     orderString = "";
                     mRecyclerView.setAdapter(mAdapter);
 
@@ -224,8 +180,10 @@ public class OrderBuilderActivity extends Activity {
                         saveOrder.setOnClickListener(new View.OnClickListener() {
                                     @Override
                         public void onClick(View v) {
-                            saveOrder(order.toString(), "first");
-                            Log.i("Saving the order:", order.toString());
+                                        Log.i("Saving the order:", order.toJsonString());
+                            saveOrder("First", order.toJsonString());
+
+
                         }
                     });
 
@@ -234,7 +192,8 @@ public class OrderBuilderActivity extends Activity {
                     placeOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            placeCurrentOrder();
+//                            placeCurrentOrder();
+                            Log.i("SQL get order: ", getOrder());
                         }
                     });
 
@@ -251,9 +210,6 @@ public class OrderBuilderActivity extends Activity {
                             R.layout.activity_vp_minerals, null, false);
 
                         setupButtonsListenersForMinerals(view);
-
-                    if(orderContents.containsKey("coke"))
-                        cokeQ.setText( orderContents.get("Coke"));
 
 
                     positionFourInflated = true;
@@ -296,8 +252,6 @@ public class OrderBuilderActivity extends Activity {
                     container.addView(view);
                     return view;
                 }
-
-
                 else
                 {
 
@@ -309,23 +263,26 @@ public class OrderBuilderActivity extends Activity {
                     return view;
 
                 }
+
             }
         });
+                    /**
+                     * SETTING UP THE NAVIGATION BAR
+                     * much of this code was taken from the example
+                     * shown on the dev.light website and then further
+                     * edited by castro to reflect the needs of SQsMe Application
+                     */
 
         final String[] colors = getResources().getStringArray(R.array.default_preview);
-
-        Log.i("Colour + ", " -> " + colors[0]);
-        Log.i("Colour + ", " -> " + colors[1]);
-        Log.i("Colour + ", " -> " + colors[2]);
-        Log.i("Colour + ", " -> " + colors[3]);
-        Log.i("Colour + ", " -> " + colors[4]);
-
-
         final NavigationTabBar navigationTabBar = findViewById(R.id.ntb_horizontal);
+
+        // edit some UI aspects of the navigation bar
         navigationTabBar.setBgColor(Color.BLACK); // nav bar background
         navigationTabBar.setInactiveColor(Color.parseColor("#404040"));
         navigationTabBar.setActiveColor(Color.WHITE);
+
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
+        // add the models to the nav bar
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_eighth),
@@ -401,12 +358,25 @@ public class OrderBuilderActivity extends Activity {
         }, 500);
     }
 
+                        /**
+                         * SETTING UP BUTTON LISTENERS
+                         * FOR THE DIFFERENT CATEGORIES OF DRINK
+                         */
+
+    /**
+     * Sets up the button listeners for the wine category
+     * @param view
+     */
+
     private void setupButtonListenersForWines(View view) {
 
         addNobilo = view.findViewById(R.id.addNobilo);
         removeNobilo = view.findViewById(R.id.removeNobilo);
 
         nobiloQ = view.findViewById(R.id.nobilo_quantity);
+
+        if(orderContents.containsKey("Nobilo Icon"))
+            nobiloQ.setText("x. " + ((int) orderContents.get("Nobilo Icon") + 1));
 
         addNobilo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -427,6 +397,9 @@ public class OrderBuilderActivity extends Activity {
 
         yellowQ = view.findViewById(R.id.yellow_quantity);
 
+        if(orderContents.containsKey("Yellow Tail"))
+            yellowQ.setText("x. " + ((int) orderContents.get("Yellow Tail") + 1));
+
         addYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -445,6 +418,9 @@ public class OrderBuilderActivity extends Activity {
         removeNingxia = view.findViewById(R.id.removeNingxia);
 
         ningxiaQ = view.findViewById(R.id.ningxia_quantity);
+
+        if(orderContents.containsKey("Ningxia Wine"))
+            ningxiaQ.setText("x. " + ((int) orderContents.get("Ningxia Wine") + 1));
 
         addNingxia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -465,6 +441,9 @@ public class OrderBuilderActivity extends Activity {
 
         irvineQ = view.findViewById(R.id.irvine_quantity);
 
+        if(orderContents.containsKey("Irvine Wine"))
+            irvineQ.setText("x. " + ((int) orderContents.get("Irvine Wine") + 1));
+
         addIrvine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -480,12 +459,20 @@ public class OrderBuilderActivity extends Activity {
         });
     }
 
+    /**
+     * Sets up button listeners for the Spirits category
+     * @param view
+     */
+
     private void setupButtonListenersForSpirits(View view) {
 
         addJameson = view.findViewById(R.id.addJameson);
         removeJameson = view.findViewById(R.id.removeJameson);
 
         jamesonQ = view.findViewById(R.id.jameson_quantity);
+
+        if(orderContents.containsKey("Jameson"))
+            jamesonQ.setText("x. " + ((int) orderContents.get("Jameson") + 1));
 
         addJameson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -506,6 +493,9 @@ public class OrderBuilderActivity extends Activity {
 
         smirnoffQ = view.findViewById(R.id.smirnoff_quantity);
 
+        if(orderContents.containsKey("Smirnoff"))
+            smirnoffQ.setText("x. " + ((int) orderContents.get("Smirnoff") + 1));
+
         addSmirnoff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -524,6 +514,9 @@ public class OrderBuilderActivity extends Activity {
         removeJd = view.findViewById(R.id.removeJd);
 
         jdQ = view.findViewById(R.id.jd_quantity);
+
+        if(orderContents.containsKey("Jack Daniels"))
+            jdQ.setText("x. " + ((int) orderContents.get("Jack Daniels") + 1));
 
         addJd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -544,6 +537,9 @@ public class OrderBuilderActivity extends Activity {
 
         captainsQ = view.findViewById(R.id.captains_quantity);
 
+        if(orderContents.containsKey("Captain Morgans"))
+            captainsQ.setText("x. " + ((int) orderContents.get("Captain Morgans") + 1));
+
         addCaptains.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -559,6 +555,11 @@ public class OrderBuilderActivity extends Activity {
         });
     }
 
+    /**
+     * Sets up button listeners for the Beers category.
+     * @param view
+     */
+
     private void setupButtonListenersForBeers(View view) {
 
         // because these elements are in other layouts
@@ -567,6 +568,9 @@ public class OrderBuilderActivity extends Activity {
         removeCheiftain = view.findViewById(R.id.removeCheiftain);
 
         cheiftainQuantity = view.findViewById(R.id.cheiftain_quantity);
+
+        if(orderContents.containsKey("Cheiftain"))
+            cheiftainQuantity.setText("x. " + ((int) orderContents.get("Cheiftain") + 1));
 
         addCheiftain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -590,6 +594,9 @@ public class OrderBuilderActivity extends Activity {
 
         coorsQuantity= view.findViewById(R.id.coors_quantity);
 
+        if(orderContents.containsKey("Coors"))
+            coorsQuantity.setText("x. " + ((int) orderContents.get("Coors") + 1));
+
         addCoors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -611,6 +618,9 @@ public class OrderBuilderActivity extends Activity {
         removeHeineken = view.findViewById(R.id.removeHeineken);
 
         heinekenQuantity = view.findViewById(R.id.heineken_quantity);
+
+        if(orderContents.containsKey("Heineken"))
+            heinekenQuantity.setText("x. " + ((int) orderContents.get("Heineken") + 1));
 
         addHeineken.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -634,6 +644,9 @@ public class OrderBuilderActivity extends Activity {
 
         tuborgQuantity = view.findViewById(R.id.tuborg_quantity);
 
+        if(orderContents.containsKey("Tuborg"))
+            tuborgQuantity.setText("x. " + ((int) orderContents.get("Tuborg") + 1));
+
         addTuborg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -649,6 +662,11 @@ public class OrderBuilderActivity extends Activity {
         });
     }
 
+    /**
+     * Sets up button listeners for the Minerals category
+     * @param view
+     */
+
     private void setupButtonsListenersForMinerals(View view) {
 
         // because these elements are in other layouts
@@ -658,9 +676,12 @@ public class OrderBuilderActivity extends Activity {
 
         cokeQ = view.findViewById(R.id.coke_quantity);
 
-        for(int i = 0; i < orderArray.length; i++)
-            if(orderArray[i] != null && orderArray[i].contains("Coke"))
-                cokeQ.setText(orderArray[i].substring(orderArray[i].length() - 2));
+        // this is used to make sure that the quantity is updated when the
+        // user navigates back to this category layout after being here before moving.
+
+        if(orderContents.containsKey("Coke"))
+            cokeQ.setText("x. " + ((int) orderContents.get("Coke") + 1));
+
 
         addCoke.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -684,6 +705,9 @@ public class OrderBuilderActivity extends Activity {
 
         sevenupQ = view.findViewById(R.id.seven_up_quantity);
 
+        if(orderContents.containsKey("7up"))
+            sevenupQ.setText("x. " + ((int) orderContents.get("7up") + 1));
+
         add7up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -705,6 +729,9 @@ public class OrderBuilderActivity extends Activity {
         removeClubOrange = view.findViewById(R.id.removeClubOrange);
 
         cluborangeQ = view.findViewById(R.id.club_orange_quantity);
+
+        if(orderContents.containsKey("Club Orange"))
+            cluborangeQ.setText("x. " + ((int) orderContents.get("Club Orange") + 1));
 
         addClubOrange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -728,6 +755,9 @@ public class OrderBuilderActivity extends Activity {
 
         schwepsQ = view.findViewById(R.id.schweps_quantity);
 
+        if(orderContents.containsKey("Schweppes"))
+            schwepsQ.setText("x. " + ((int) orderContents.get("Schweppes") + 1));
+
         addSchweps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -746,6 +776,8 @@ public class OrderBuilderActivity extends Activity {
     public void addDrinkToOrder(String name, TextView quantity){
         int current = Integer.parseInt(quantity.getText().toString().substring(3) + "");
         quantity.setText(".x " + (current + 1));
+
+        order.addDrinkAndQuantityToOrder(name, (current + 1));
 
         if(current == 0){
             orderArray[currentDrinkNum] = name + "\t\t" + ".x " + (current + 1);
@@ -783,11 +815,19 @@ public class OrderBuilderActivity extends Activity {
 
     }
 
+    /**
+     * This method is just used to set the navigation bar to black
+     */
+
     public void setupPhoneUI(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.BLACK);
         }
     }
+
+                    /**
+                     * DATABASE METHODS
+                     */
 
     /**
      * This method is to save a customers order that they can later
@@ -796,7 +836,7 @@ public class OrderBuilderActivity extends Activity {
      * @param _name
      */
 
-    public void saveOrder(String _order, String _name){
+    public void saveOrder(String _name, String _order){
 
         try{
 
@@ -804,23 +844,32 @@ public class OrderBuilderActivity extends Activity {
 
             // create a table
             // android studio does not parse the sql, so errors only appear at runtime
-            db.execSQL("CREATE TABLE IF NOT EXISTS orders (name VARCHAR, id INT(3), contents VARCHAR)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS favourites (name VARCHAR, id INT(3), contents VARCHAR)");
 
-            db.execSQL("INSERT INTO orders (name, id, contents) " +
-                    "VALUES ('Favourite 1', 123, '[\n\t{ name:jameson \n\t}\n\t] ')");
+            db.execSQL("INSERT INTO favourites (name, id, contents) " +
+                    "VALUES (" + "'" + _name + "'" + ", 187," + "'" + _order + "'" + " )");
 
 
-            Log.i("SQL: ", getOrder());
+
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
 
+    /**
+     * This method is used to gather saved orders from the local database
+     * on the customers device. In future releases this will be encrypted
+     * and made more secure for customers wanting that.
+     * @return
+     */
+
     public String getOrder(){
 
         // to get the data out of the db
         // a cursor allows us to loop through all the data
+
+        String orderContents = "";
 
         // can use WHERE, AND, LIKE, LIMIT to improve query types
         // WHERE name = Ryan
@@ -832,7 +881,7 @@ public class OrderBuilderActivity extends Activity {
 
         // DELETE FROM users WHERE name = 'Eric' LIMIT 1
         // UPDATE users SET age = 20 WHERE name = 'Ryan'
-        Cursor c = db.rawQuery("SELECT * FROM orders", null);
+        Cursor c = db.rawQuery("SELECT * FROM favourites", null);
 
         // get the column indexes - different to mysql
         int nameIndex = c.getColumnIndex("name");
@@ -842,21 +891,28 @@ public class OrderBuilderActivity extends Activity {
         ArrayList<Order> orders = new ArrayList<>();
 
         // move to first result
-        c.moveToFirst();
-        while(c != null){
+        if(c != null && c.moveToFirst()){
+            do{
+                    Log.i("Name", c.getString(nameIndex));
+                    Log.i("Id", c.getString(idIndex) + "");
+                    Log.i("Contents", c.getString(contentIndex) + "");
 
-            Log.i("Name", c.getString(nameIndex));
-            Log.i("Id", c.getString(idIndex) + "");
-            Log.i("Contents", c.getString(contentIndex) + "");
 
-            orders.add(new Order(c.getString(idIndex)));
+                orders.add(new Order(c.getString(idIndex)));
 
-            // move to next result
-            c.moveToNext();
+                // move to next result
+                c.moveToNext();
+            }
+            while(c.moveToNext());
         }
 
-        return orders.toString();
+
+        return orderContents;
     }
+
+                /**
+                 * SETTING UP FIREBASE METHODS
+                 */
 
     public void setupDBForOrders(){
         db = FirebaseDatabase.getInstance();
@@ -911,7 +967,7 @@ public class OrderBuilderActivity extends Activity {
     }
 
     public void placeCurrentOrder() {
-        activeRef.push().setValue(order.toString());
+        activeRef.push().setValue(order.toJsonString());
     }
 
 }

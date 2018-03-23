@@ -3,6 +3,8 @@ package com.squeuesme.core.drink;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is to represent an order
@@ -14,11 +16,11 @@ public class Order
 {
     private static int orderCount;
     private int currentOrderNum;
-    private String current;
     private String orderId;
+    private String venueId;
     private String customerId;
     private ArrayList<String> currentOrder;
-    private ArrayList<Integer> quantity;
+    private Map<String, Integer> orderMap;
 
     /* CONSTRUCTORS */
 
@@ -30,6 +32,7 @@ public class Order
 
     public Order(){
         currentOrder = new ArrayList<String>();
+        orderMap = new HashMap<>();
         currentOrderNum = orderCount++;
     }
 
@@ -39,7 +42,7 @@ public class Order
         currentOrderNum = orderCount++;
     }
 
-    public Order(String _customerId, ArrayList<String> _currentOrder){
+    public Order(String _customerId, String _venueId, ArrayList<String> _currentOrder){
         customerId = _customerId;
         currentOrder = _currentOrder;
         currentOrderNum = orderCount++;
@@ -71,19 +74,17 @@ public class Order
         this.currentOrder = currentOrder;
     }
 
-    public ArrayList<Integer> getQuantityOfDrinks() {
-        return quantity;
-    }
-
-    public void setQuantityOfDrinks(ArrayList<Integer> _quantity){
-        quantity = _quantity;
-    }
-
     public static int getNumberOfOrders(){
         return orderCount;
     }
 
     public void addDrinkToOrder(String _drink) {
+        currentOrder.add(_drink.toString());
+        Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
+    }
+
+    public void addDrinkAndQuantityToOrder(String _drink, int _quantity) {
+        orderMap.put(_drink, _quantity);
         currentOrder.add(_drink.toString());
         Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
     }
@@ -105,14 +106,20 @@ public class Order
         return order;
     }
 
-    @Override
-    public String toString()
+    public String toJsonString()
     {
         String toReturn = "Order " + (currentOrderNum + 1) + ": \n";
-        for(String d: currentOrder){
-            toReturn += d.toString();
+
+        toReturn += "[\n";
+
+        // traverse the order map
+        for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            toReturn += "\t\"" + key + "\"" + " : " + value + "\n";
         }
 
+        toReturn += "]\n";
 
         return toReturn;
     }
