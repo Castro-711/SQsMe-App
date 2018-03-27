@@ -14,16 +14,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squeuesme.core.drink.Order;
-import com.squeuesme.core.venue.OrdersBoard;
-import com.squeuesme.core.venue.Venue;
+import com.squeuesme.core.Order;
+//import com.squeuesme.core.OrdersBoard;
+import com.squeuesme.core.Venue;
 
 import java.util.ArrayList;
 
 public class OrdersBoardActivity extends AppCompatActivity {
 
     private Venue venue;
-    private OrdersBoard ordersBoard;
+//    private OrdersBoard ordersBoard;
 
     private ListView listView;
     private ArrayList<Order> ordersList;

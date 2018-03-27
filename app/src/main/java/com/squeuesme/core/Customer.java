@@ -1,10 +1,4 @@
-package com.squeuesme.core.user;
-
-import com.squeuesme.core.drink.Drink;
-import com.squeuesme.core.drink.Order;
-
-import com.squeuesme.core.venue.OrdersBoard;
-import com.squeuesme.core.venue.Venue;
+package com.squeuesme.core;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -23,7 +17,7 @@ public class Customer extends User
     private Venue activeVenue;
     private Order activeOrder;
     private Order lastOrder;
-    private ArrayList<Drink> favourites;
+    private ArrayList<String> favourites;
     private ArrayList<Order> orderHistory;
 
     public Customer(){
@@ -59,12 +53,12 @@ public class Customer extends User
         activeOrder = _order;
     }
 
-    public ArrayList<Drink> getFavourites()
+    public ArrayList<String> getFavourites()
     {
         return favourites;
     }
 
-    public void setFavourites(ArrayList<Drink> _favs)
+    public void setFavourites(ArrayList<String> _favs)
     {
         favourites = _favs;
     }
@@ -98,14 +92,14 @@ public class Customer extends User
     }
 
     public void placeOrder(Order _order) {
-        activeVenue.registerCustomerOrder(this.getUniqueId(), _order);
+        activeVenue.addCustomerOrderToActiveQueue(_order);
     }
 
     public void cancelOrder(Order _order){
-        activeVenue.removeCancelledOrder(_order);
+        activeVenue.removeCustomerOrderFromActiveQueue(_order);
     }
 
-    public OrdersBoard getOrdersBoard(){
-        return activeVenue.getCurrentOrdersBoard();
-    }
+//    public OrdersBoard getOrdersBoard(){
+//        return activeVenue.getCurrentOrdersBoard();
+//    }
 }

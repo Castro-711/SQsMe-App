@@ -1,4 +1,4 @@
-package com.squeuesme.core.user;
+package com.squeuesme.core;
 
 /**
  * This class is where all my concrete users will

@@ -1,4 +1,4 @@
-package com.squeuesme.core.drink;
+package com.squeuesme.core;
 
 import android.util.Log;
 
@@ -20,7 +20,7 @@ public class Order
     private String venueId;
     private String customerId;
     private ArrayList<String> currentOrder;
-    private Map<String, Integer> orderMap;
+    private Map<String, Integer> drinks;
 
     /* CONSTRUCTORS */
 
@@ -32,7 +32,7 @@ public class Order
 
     public Order(){
         currentOrder = new ArrayList<String>();
-        orderMap = new HashMap<>();
+        drinks = new HashMap<>();
         currentOrderNum = orderCount++;
     }
 
@@ -79,7 +79,7 @@ public class Order
     }
 
     public Map<String, Integer> getDrinks(){
-        return orderMap;
+        return drinks;
     }
 
     public void addDrinkToOrder(String _drink) {
@@ -88,17 +88,17 @@ public class Order
     }
 
     public void addDrinkAndQuantityToOrder(String _drink, int _quantity) {
-        orderMap.put(_drink, _quantity);
+        drinks.put(_drink, _quantity);
         currentOrder.add(_drink.toString());
         Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
     }
 
     public void decreaseQuantityOfDrink(String _drink){
-        if(orderMap.get(_drink) > 0)
-            orderMap.put(_drink, orderMap.get(_drink) - 1);
+        if(drinks.get(_drink) > 0)
+            drinks.put(_drink, drinks.get(_drink) - 1);
         else
         {
-            orderMap.remove(_drink);
+            drinks.remove(_drink);
             currentOrder.remove(_drink);
         }
     }
@@ -107,7 +107,7 @@ public class Order
 //        currentOrder.get(currentOrder.indexOf(_drink)).setQuantity(quantity);
 //    }
 
-    public void removeDrinkFromOrder(Drink _drink){
+    public void removeDrinkFromOrder(String _drink){
         currentOrder.remove(_drink);
     }
 
@@ -124,7 +124,7 @@ public class Order
         String[] array = new String[20];
         int i = 0;
 
-        for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : drinks.entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
 
@@ -136,12 +136,12 @@ public class Order
 
     public String toJsonString()
     {
-        String toReturn = "Order " + (currentOrderNum + 1) + ": \n";
+        String toReturn = "Order " + (currentOrderNum + 1) + ":\n";
 
         toReturn += "[\n";
 
         // traverse the order map
-        for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : drinks.entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
             toReturn += "\t\"" + key + "\"" + " : " + value + "\n";
