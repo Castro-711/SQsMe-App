@@ -1,7 +1,5 @@
 package com.squeuesme.core;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +12,14 @@ import java.util.Map;
 
 public class Order
 {
+    /**
+     * remove orderCount, currentOrderNum, currentOrder soon to
+     * match it up with the thesis.
+     */
+
     private static int orderCount;
     private int currentOrderNum;
+    private String orderStatus;
     private String orderId;
     private String venueId;
     private String customerId;
@@ -31,24 +35,33 @@ public class Order
      */
 
     public Order(){
-        currentOrder = new ArrayList<String>();
+        currentOrder = new ArrayList<>();
         drinks = new HashMap<>();
         currentOrderNum = orderCount++;
     }
 
     public Order(String _customerId){
         customerId = _customerId;
-        currentOrder = new ArrayList<String>();
+        currentOrder = new ArrayList<>();
         currentOrderNum = orderCount++;
     }
 
     public Order(String _customerId, String _venueId, ArrayList<String> _currentOrder){
         customerId = _customerId;
+        venueId = _venueId;
         currentOrder = _currentOrder;
         currentOrderNum = orderCount++;
     }
 
     /* GETTERS and SETTERS */
+
+    public void updateOrderStatus(String _status){
+        orderStatus = _status;
+    }
+
+    public String getOrderStatus(){
+        return orderStatus;
+    }
 
     public String getOrderId(){
         return orderId;
@@ -84,13 +97,11 @@ public class Order
 
     public void addDrinkToOrder(String _drink) {
         currentOrder.add(_drink.toString());
-        Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
     }
 
     public void addDrinkAndQuantityToOrder(String _drink, int _quantity) {
         drinks.put(_drink, _quantity);
         currentOrder.add(_drink.toString());
-        Log.i("Index of current order", "" + currentOrder.indexOf(_drink));
     }
 
     public void decreaseQuantityOfDrink(String _drink){
@@ -120,7 +131,7 @@ public class Order
         return order;
     }
 
-    public String[] orderAsAnArray(){
+    public String[] getOrderAsArray(){
         String[] array = new String[20];
         int i = 0;
 

@@ -1,5 +1,7 @@
 package com.squeuesme.core;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 /**
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 public class Venue
 {
     private String name;
+    private LatLng latLng;
     private ArrayList<Customer> activeCustomers;
     private ArrayList<Order> activeOrders;
     private ArrayList<Order> completedOrders;

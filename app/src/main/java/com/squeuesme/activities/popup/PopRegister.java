@@ -16,8 +16,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squeuesme.activities.R;
-import com.squeuesme.core.user.Customer;
-import com.squeuesme.core.venue.Venue;
+import com.squeuesme.core.Customer;
+import com.squeuesme.core.Venue;
 
 import java.util.Calendar;
 import java.util.Date;

@@ -32,10 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squeuesme.activities.R;
-import com.squeuesme.core.drink.Drink;
-import com.squeuesme.core.drink.Order;
-import com.squeuesme.core.user.Customer;
-import com.squeuesme.core.venue.Venue;
+import com.squeuesme.core.Order;
+import com.squeuesme.core.Customer;
+import com.squeuesme.core.Venue;
 
 /**
  * Created by GIGAMOLE on 28.03.2016.
@@ -149,10 +148,10 @@ public class OrderBuilderActivity extends Activity {
             @Override
             public Object instantiateItem(final ViewGroup container, final int position) {
 
-//                if(orderArray[0] != null)
-//                    for(int i = 0; i < orderArray.length; i++)
-//                        if(orderContents.containsKey(orderArray[i]))
-//                            cokeQ.setText("x. " + orderContents.get(orderArray[i]) + 1);
+                if(orderArray[0] != null)
+                    for(int i = 0; i < orderArray.length; i++)
+                        if(orderContents.containsKey(orderArray[i]))
+                            cokeQ.setText("x. " + orderContents.get(orderArray[i]) + 1);
 
                 if(position == 4){
 
@@ -192,7 +191,7 @@ public class OrderBuilderActivity extends Activity {
                     placeOrder.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            placeCurrentOrder();
+                            placeCurrentOrder();
                             Log.i("SQL get order: ", getOrder());
                         }
                     });
@@ -377,8 +376,8 @@ public class OrderBuilderActivity extends Activity {
 
         nobiloQ = view.findViewById(R.id.nobilo_quantity);
 
-        if(orderContents.containsKey("Nobilo Icon"))
-            nobiloQ.setText("x. " + ((int) orderContents.get("Nobilo Icon") + 1));
+        if(order.getDrinks().containsKey("Nobilo Icon"))
+            nobiloQ.setText("x. " + ((int) order.getDrinks().get("Nobilo Icon")));
 
         addNobilo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -399,8 +398,8 @@ public class OrderBuilderActivity extends Activity {
 
         yellowQ = view.findViewById(R.id.yellow_quantity);
 
-        if(orderContents.containsKey("Yellow Tail"))
-            yellowQ.setText("x. " + ((int) orderContents.get("Yellow Tail") + 1));
+        if(order.getDrinks().containsKey("Yellow Tail"))
+            yellowQ.setText("x. " + ((int) order.getDrinks().get("Yellow Tail")));
 
         addYellow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -421,8 +420,8 @@ public class OrderBuilderActivity extends Activity {
 
         ningxiaQ = view.findViewById(R.id.ningxia_quantity);
 
-        if(orderContents.containsKey("Ningxia Wine"))
-            ningxiaQ.setText("x. " + ((int) orderContents.get("Ningxia Wine") + 1));
+        if(order.getDrinks().containsKey("Ningxia Wine"))
+            ningxiaQ.setText("x. " + ((int) order.getDrinks().get("Ningxia Wine")));
 
         addNingxia.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -443,8 +442,8 @@ public class OrderBuilderActivity extends Activity {
 
         irvineQ = view.findViewById(R.id.irvine_quantity);
 
-        if(orderContents.containsKey("Irvine Wine"))
-            irvineQ.setText("x. " + ((int) orderContents.get("Irvine Wine") + 1));
+        if(order.getDrinks().containsKey("Irvine Wine"))
+            irvineQ.setText("x. " + ((int) order.getDrinks().get("Irvine Wine")));
 
         addIrvine.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -473,8 +472,8 @@ public class OrderBuilderActivity extends Activity {
 
         jamesonQ = view.findViewById(R.id.jameson_quantity);
 
-        if(orderContents.containsKey("Jameson"))
-            jamesonQ.setText("x. " + ((int) orderContents.get("Jameson") + 1));
+        if(order.getDrinks().containsKey("Jameson"))
+            jamesonQ.setText("x. " + ((int) order.getDrinks().get("Jameson")));
 
         addJameson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -495,8 +494,8 @@ public class OrderBuilderActivity extends Activity {
 
         smirnoffQ = view.findViewById(R.id.smirnoff_quantity);
 
-        if(orderContents.containsKey("Smirnoff"))
-            smirnoffQ.setText("x. " + ((int) orderContents.get("Smirnoff") + 1));
+        if(order.getDrinks().containsKey("Smirnoff"))
+            smirnoffQ.setText("x. " + ((int) order.getDrinks().get("Smirnoff")));
 
         addSmirnoff.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,8 +516,8 @@ public class OrderBuilderActivity extends Activity {
 
         jdQ = view.findViewById(R.id.jd_quantity);
 
-        if(orderContents.containsKey("Jack Daniels"))
-            jdQ.setText("x. " + ((int) orderContents.get("Jack Daniels") + 1));
+        if(order.getDrinks().containsKey("Jack Daniels"))
+            jdQ.setText("x. " + ((int) order.getDrinks().get("Jack Daniels")));
 
         addJd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -539,8 +538,8 @@ public class OrderBuilderActivity extends Activity {
 
         captainsQ = view.findViewById(R.id.captains_quantity);
 
-        if(orderContents.containsKey("Captain Morgans"))
-            captainsQ.setText("x. " + ((int) orderContents.get("Captain Morgans") + 1));
+        if(order.getDrinks().containsKey("Captain Morgans"))
+            captainsQ.setText("x. " + ((int) order.getDrinks().get("Captain Morgans")));
 
         addCaptains.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -571,8 +570,8 @@ public class OrderBuilderActivity extends Activity {
 
         cheiftainQuantity = view.findViewById(R.id.cheiftain_quantity);
 
-        if(orderContents.containsKey("Cheiftain"))
-            cheiftainQuantity.setText("x. " + ((int) orderContents.get("Cheiftain") + 1));
+        if(order.getDrinks().containsKey("Cheiftain"))
+            cheiftainQuantity.setText("x. " + ((int) order.getDrinks().get("Cheiftain")));
 
         addCheiftain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -596,8 +595,8 @@ public class OrderBuilderActivity extends Activity {
 
         coorsQuantity= view.findViewById(R.id.coors_quantity);
 
-        if(orderContents.containsKey("Coors"))
-            coorsQuantity.setText("x. " + ((int) orderContents.get("Coors") + 1));
+        if(order.getDrinks().containsKey("Coors"))
+            coorsQuantity.setText("x. " + ((int) order.getDrinks().get("Coors")));
 
         addCoors.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -621,8 +620,8 @@ public class OrderBuilderActivity extends Activity {
 
         heinekenQuantity = view.findViewById(R.id.heineken_quantity);
 
-        if(orderContents.containsKey("Heineken"))
-            heinekenQuantity.setText("x. " + ((int) orderContents.get("Heineken") + 1));
+        if(order.getDrinks().containsKey("Heineken"))
+            heinekenQuantity.setText("x. " + ((int) order.getDrinks().get("Heineken")));
 
         addHeineken.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -646,8 +645,8 @@ public class OrderBuilderActivity extends Activity {
 
         tuborgQuantity = view.findViewById(R.id.tuborg_quantity);
 
-        if(orderContents.containsKey("Tuborg"))
-            tuborgQuantity.setText("x. " + ((int) orderContents.get("Tuborg") + 1));
+        if(order.getDrinks().containsKey("Tuborg"))
+            tuborgQuantity.setText("x. " + ((int) order.getDrinks().get("Tuborg")));
 
         addTuborg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -681,8 +680,8 @@ public class OrderBuilderActivity extends Activity {
         // this is used to make sure that the quantity is updated when the
         // user navigates back to this category layout after being here before moving.
 
-        if(orderContents.containsKey("Coke"))
-            cokeQ.setText("x. " + ((int) orderContents.get("Coke") + 1));
+        if(order.getDrinks().containsKey("Coke"))
+            cokeQ.setText("x. " + ((int) order.getDrinks().get("Coke")));
 
 
         addCoke.setOnClickListener(new View.OnClickListener() {
@@ -707,8 +706,8 @@ public class OrderBuilderActivity extends Activity {
 
         sevenupQ = view.findViewById(R.id.seven_up_quantity);
 
-        if(orderContents.containsKey("7up"))
-            sevenupQ.setText("x. " + ((int) orderContents.get("7up") + 1));
+        if(order.getDrinks().containsKey("7up"))
+            sevenupQ.setText("x. " + ((int) order.getDrinks().get("7up")));
 
         add7up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -732,8 +731,8 @@ public class OrderBuilderActivity extends Activity {
 
         cluborangeQ = view.findViewById(R.id.club_orange_quantity);
 
-        if(orderContents.containsKey("Club Orange"))
-            cluborangeQ.setText("x. " + ((int) orderContents.get("Club Orange") + 1));
+        if(order.getDrinks().containsKey("Club Orange"))
+            cluborangeQ.setText("x. " + ((int) order.getDrinks().get("Club Orange")));
 
         addClubOrange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -803,7 +802,6 @@ public class OrderBuilderActivity extends Activity {
     public void removeDrinkFromOrder(String name, TextView quantity){
         int current = Integer.parseInt(quantity.getText().toString().substring(3)  + "");
 
-
         if(current == 1)
         { // this is to remove the x.0 from the list
             for(int i = 0; i < currentDrinkNum; i++)
@@ -821,7 +819,7 @@ public class OrderBuilderActivity extends Activity {
         {
             quantity.setText(".x " + (current - 1));
             order.getDrinks().put(name, current);
-//            order.decreaseQuantityOfDrink(name);
+            order.decreaseQuantityOfDrink(name);
 
             for(int i = 0; i < currentDrinkNum; i++)
                 if(orderArray[i].contains(name)){
@@ -913,7 +911,6 @@ public class OrderBuilderActivity extends Activity {
                     Log.i("Name", c.getString(nameIndex));
                     Log.i("Id", c.getString(idIndex) + "");
                     Log.i("Contents", c.getString(contentIndex) + "");
-
 
                 orders.add(new Order(c.getString(idIndex)));
 

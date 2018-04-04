@@ -29,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squeuesme.activities.map.MapsActivity;
 import com.squeuesme.activities.order.OrderBuilderActivity;
 import com.squeuesme.activities.popup.PopRegister;
-import com.squeuesme.core.drink.Order;
+import com.squeuesme.core.Order;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +62,7 @@ public class CustomerHome extends AppCompatActivity
         toggle.syncState();
 
         TextView tv  = findViewById(R.id.btn_horizontal_ntb);
+        setupPhoneUI();
 //        tv.setText(getOrder());
 
 //        getOrder();
@@ -85,7 +86,7 @@ public class CustomerHome extends AppCompatActivity
         setUpHashMap();
         onLocationChanged(location); // call to get it to act fast if user present at venue
 
-        setupPhoneUI();
+
     }
 
     public void setUpHashMap(){
