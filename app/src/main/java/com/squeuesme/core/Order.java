@@ -18,7 +18,6 @@ public class Order
      */
 
     private static int orderCount;
-    private int currentOrderNum;
     private String orderStatus;
     private String orderId;
     private String venueId;
@@ -37,20 +36,20 @@ public class Order
     public Order(){
         currentOrder = new ArrayList<>();
         drinks = new HashMap<>();
-        currentOrderNum = orderCount++;
+        orderCount++;
     }
 
     public Order(String _customerId){
         customerId = _customerId;
         currentOrder = new ArrayList<>();
-        currentOrderNum = orderCount++;
+        orderCount++;
     }
 
     public Order(String _customerId, String _venueId, ArrayList<String> _currentOrder){
         customerId = _customerId;
         venueId = _venueId;
         currentOrder = _currentOrder;
-        currentOrderNum = orderCount++;
+        orderCount++;
     }
 
     /* GETTERS and SETTERS */
@@ -105,7 +104,7 @@ public class Order
     }
 
     public void decreaseQuantityOfDrink(String _drink){
-        if(drinks.get(_drink) > 0)
+        if(drinks.get(_drink) > 1)
             drinks.put(_drink, drinks.get(_drink) - 1);
         else
         {
@@ -113,10 +112,6 @@ public class Order
             currentOrder.remove(_drink);
         }
     }
-
-//    public void increaseQuantityOfDrinkOnOrder(Drink _drink, int quantity){
-//        currentOrder.get(currentOrder.indexOf(_drink)).setQuantity(quantity);
-//    }
 
     public void removeDrinkFromOrder(String _drink){
         currentOrder.remove(_drink);
@@ -147,7 +142,7 @@ public class Order
 
     public String toJsonString()
     {
-        String toReturn = "Order " + (currentOrderNum + 1) + ":\n";
+        String toReturn = "Order " + (orderCount + 1) + ":\n";
 
         toReturn += "[\n";
 

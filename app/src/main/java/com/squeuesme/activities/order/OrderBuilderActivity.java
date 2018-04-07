@@ -810,6 +810,7 @@ public class OrderBuilderActivity extends Activity {
                     orderArray[i] = orderArray[currentDrinkNum - 1]; // move last in
                     orderArray[currentDrinkNum - 1] = ""; // reset the last drink
                     --currentDrinkNum; // reduce count
+                    order.decreaseQuantityOfDrink(name);
                     quantity.setText(".x " + (current - 1));
                     mAdapter.notifyDataSetChanged();
                 }
@@ -942,11 +943,6 @@ public class OrderBuilderActivity extends Activity {
 
                 String order = (String) dataSnapshot.getValue();
 
-                if(getCustomerId(order).equals(customer.getUniqueId()))
-                    textView.setText(order);
-
-                Log.i("Customer Id", getCustomerId(order));
-                Log.i("Unique Id", customer.getUniqueId());
 
                 Log.i("Completed it", dataSnapshot.toString());
 

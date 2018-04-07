@@ -96,6 +96,9 @@ public class PopRegister extends Activity {
 
                 changeUserStatus("activeVenue", venue.getName());
 
+                setResult(1);
+                finish();
+
             }
         });
 

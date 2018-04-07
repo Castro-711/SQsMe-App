@@ -1,5 +1,6 @@
 package com.squeuesme.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -65,6 +67,11 @@ public class CustomerHome extends AppCompatActivity
         setupPhoneUI();
 //        tv.setText(getOrder());
 
+        if(customerHasVenue) {
+            @SuppressLint("ResourceType") View view = findViewById(R.layout.app_bar_customer_home);
+
+        }
+
 //        getOrder();
 
         navigationView = findViewById(R.id.nav_view);
@@ -85,7 +92,6 @@ public class CustomerHome extends AppCompatActivity
         Location location = locationManager.getLastKnownLocation(provider);
         setUpHashMap();
         onLocationChanged(location); // call to get it to act fast if user present at venue
-
 
     }
 
@@ -123,7 +129,9 @@ public class CustomerHome extends AppCompatActivity
 
         MenuItem nearbyVenue = menu.findItem(R.id.nav_slideshow);
         nearbyVenue.setTitle("Nearby Venues");
-        nearbyVenue.setIcon(R.mipmap.ic_map);
+        nearbyVenue.setIcon(R.drawable.ic_locate_venue);
+
+        menu.removeItem(R.id.nav_manage);
 
     }
 
@@ -246,7 +254,7 @@ public class CustomerHome extends AppCompatActivity
                 hasPromptedCustomer = true;
 
                 Log.i("pubName checkIfVenue", pub);
-                startActivity(i);
+                startActivityForResult(i, 1);
 
             } // if
         } // while
@@ -272,6 +280,14 @@ public class CustomerHome extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.BLACK);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("I am the requestCode", ""+requestCode);
+
+        if(requestCode == 1)
+            customerHasVenue = true;
     }
 
     public String getOrder(){
