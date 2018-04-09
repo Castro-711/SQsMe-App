@@ -3,6 +3,7 @@ package com.squeuesme.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -31,9 +32,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squeuesme.activities.map.MapsActivity;
 import com.squeuesme.activities.order.OrderBuilderActivity;
 import com.squeuesme.activities.popup.PopRegister;
+import com.squeuesme.core.Customer;
 import com.squeuesme.core.Order;
+import com.squeuesme.core.Venue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,6 +52,9 @@ public class CustomerHome extends AppCompatActivity
     private boolean customerHasVenue;
     private HashMap<String, LatLng> pubCoordinates;
 
+    private Customer customer;
+    private Venue venue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +64,21 @@ public class CustomerHome extends AppCompatActivity
         toolbar.setBackgroundColor(Color.BLACK);
         setSupportActionBar(toolbar);
 
+//        findViewById(R.layout.activity_customer_home.
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        TextView tv  = findViewById(R.id.btn_horizontal_ntb);
+//        TextView tv  = findViewById(R.id.btn_horizontal_ntb);
         setupPhoneUI();
 //        tv.setText(getOrder());
 
         if(customerHasVenue) {
-            @SuppressLint("ResourceType") View view = findViewById(R.layout.app_bar_customer_home);
+            @SuppressLint("ResourceType") View view = findViewById(R.layout.activity_customer_home);
+            view.findViewById(R.id.leaveVenue).setBackgroundColor(Color.WHITE);
 
         }
 
@@ -93,6 +103,12 @@ public class CustomerHome extends AppCompatActivity
         setUpHashMap();
         onLocationChanged(location); // call to get it to act fast if user present at venue
 
+    }
+
+    public void setupObjects(){
+//        if(customer == null)
+//        customer = null;
+//        venue = null;
     }
 
     public void setUpHashMap(){
@@ -209,6 +225,9 @@ public class CustomerHome extends AppCompatActivity
         }
         locationManager.requestLocationUpdates(
                 provider, 400, 1, this);
+
+//        if(customerHasVenue)
+//            Log.i("activeVenue", ""+customer.getActiveVenue());
     }
 
     @Override
@@ -286,8 +305,30 @@ public class CustomerHome extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i("I am the requestCode", ""+requestCode);
 
-        if(requestCode == 1)
+        Log.i("The REQUEST_CODE", ""+   requestCode);
+
+        SharedPreferences sharedPreferences =
+                this.getSharedPreferences("com.squeuesme.core",
+                        Context.MODE_PRIVATE);
+
+        // this gets executed if customer wants to order from this pub
+        if(resultCode == RESULT_OK)
+        {
             customerHasVenue = true;
+            customer = new Customer();
+
+            // get the customers uid
+            sharedPreferences.edit().putString("customerId", customer.getUniqueId());
+            String venueName = sharedPreferences.getString("activeVenue", null);
+
+            findViewById(R.id.leaveVenue).setBackgroundColor(Color.WHITE);
+            findViewById(R.id.venueView).setBackgroundColor(Color.BLACK);
+            TextView tv = findViewById(R.id.venueView);
+            tv.setText("Current Pub: " + venueName.toUpperCase());
+
+            Log.i("The REQUEST_CODE", ""+   requestCode);
+        }
+
     }
 
     public String getOrder(){
@@ -322,7 +363,7 @@ public class CustomerHome extends AppCompatActivity
             Log.i("Id", c.getString(idIndex) + "");
             Log.i("Contents", c.getString(contentIndex) + "");
 
-            orders.add(new Order(c.getString(idIndex)));
+            orders.add(new Order());
 
             // move to next result
             c.moveToNext();

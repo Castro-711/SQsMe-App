@@ -12,19 +12,20 @@ fab button within the customer home activity -->
     android:background="#404040">
 
     <TextView
-        android:id="@+id/btn_horizontal_ntb"
+        android:id="@+id/venueView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:textStyle="bold"
+        android:textSize="26dp"
         android:gravity="center"
-        android:text="Has an active venue"
-        android:textColor="#ff0000"
+        android:text="NO CURRENT PUB "
+        android:textColor="#00ff00"
         android:layout_margin="10dp"
-        android:background="#00ff00"/>
+        android:background="#000000"/>
 
     <TextView
-        android:id="@+id/btn_horizontal_coordinator_ntb"
+        android:id="@+id/lastOrderDisplay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="10dp"
@@ -35,15 +36,15 @@ fab button within the customer home activity -->
         android:layout_weight="1"
         android:background="#000000"
         android:gravity="center"
-        android:text="Horizontal(Coordinator Layout) NavigationTabBar"
+        android:text="Last Order"
         android:textColor="#ffffff"
         android:textStyle="bold" />
     <TextView
-        android:id="@+id/btn_horizontal_top_ntb"
+        android:id="@+id/reorderLastOrder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Horizontal Top NavigationTabBar"
+        android:text="Reorder Last Drink"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="#9b92b3"
@@ -55,11 +56,11 @@ fab button within the customer home activity -->
         android:background="#1234ff"/>
 
     <TextView
-        android:id="@+id/btn_vertical_ntb"
+        android:id="@+id/leaveVenue"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Vetical NavigationTabBar"
+        android:text="Leave Venue"
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="#9b92b3"

@@ -22,6 +22,12 @@ public class Venue
         setupArrays();
     }
 
+    public Venue(LatLng latLng){
+        this.latLng = latLng;
+        setupArrays();
+    }
+
+
     /**
      * This method adds a new Customer to the Venues list
      * of active customers. While adding the customer it also

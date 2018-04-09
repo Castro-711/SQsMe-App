@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#000000"
+    android:fadingEdge="vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#6A6A6A"
+        android:layout_margin="10sp">
+
+        <TextView
+            android:id="@+id/pubName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_marginTop="20sp"
+            android:backgroundTintMode="screen"
+            android:fadingEdge="horizontal"
+            android:text="The Roost"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <ImageView
+            android:id="@+id/pubImage"
+            android:src="@mipmap/the_roost"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20sp"
+            android:layout_height="100sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65sp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/register"
+                android:gravity="center"
+                android:textSize="27sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:text="YOUR ORDER IS READY...!"
+                android:fontFamily="monospace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Do you wish to head to collect your beer?"
+                android:layout_marginHorizontal="10sp"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:text="Yes please!"
+            android:textColor="#00ff00"
+            android:background="#ffffff"
+            android:layout_width="150sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

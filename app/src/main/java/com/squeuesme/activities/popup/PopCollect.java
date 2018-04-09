@@ -23,18 +23,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * some notes:
- * When you register, that is when you become a customer
- * this should ease how to interact between venues and customers.
- * The venue then that you are registering with can be included in the
- * construction of the customer.
  *
- * Before registering users are only potential customers.
- *
- * Created by castro on 10/02/18.
+ * Created by castro on 09/04/18.
  */
 
-public class PopRegister extends Activity {
+public class PopCollect extends Activity {
 
     private RatingBar ratingBar;
     private TextView openStatus;
@@ -54,7 +47,7 @@ public class PopRegister extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.popup_register);
+        setContentView(R.layout.popup_collect);
 
         ratingBar = findViewById(R.id.ratingBar);
         openStatus = findViewById(R.id.openStatus);
@@ -84,6 +77,7 @@ public class PopRegister extends Activity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 /**
                  * in here I will create the customer,
                  * connect him to the venue by getting the venue information
@@ -103,18 +97,6 @@ public class PopRegister extends Activity {
 
             }
         });
-
-//        unRegister.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /**
-//                 * here I will remove the user from being a customer
-//                 * allowing them to receive notifications on for registration
-//                 * with other pubs
-//                 */
-//            }
-//        });
-
     }
 
     public void changeUserStatus(String _key, String _value){
@@ -135,7 +117,6 @@ public class PopRegister extends Activity {
                         Context.MODE_PRIVATE);
 
         sharedPreferences.edit().putString(_key, _value).apply();
-//
         String username = sharedPreferences.getString(_key, "");
 
         Log.i(_key, username);
@@ -174,7 +155,7 @@ public class PopRegister extends Activity {
         }
         else if(_pubName.equals("clubEolas"))
         {
-            pubIcon.setImageResource(R.mipmap.student_u);
+            pubIcon.setImageResource(R.mipmap.club_eolas);
             pubName.setText("Club Eolas");
         }
 

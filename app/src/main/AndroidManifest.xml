@@ -55,6 +55,10 @@
             android:name=".popup.PopRegister"
             android:theme="@style/AppTheme.CustomTheme" />
 
+        <activity
+            android:name=".popup.PopCollect"
+            android:theme="@style/AppTheme.CustomTheme" />
+
         <activity android:name=".order.OrderBuilderActivity">
 
         </activity>

@@ -178,6 +178,6 @@ public class Customer
 
     public void cancelOrder(){
         activeVenue.removeCustomerOrderFromActiveQueue(activeOrder);
-        activeOrder.updateOrderStatus("Cancelled");
+//        activeOrder.updateOrderStatus("Cancelled");
     }
 }

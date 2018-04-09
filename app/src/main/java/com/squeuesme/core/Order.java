@@ -1,8 +1,11 @@
 package com.squeuesme.core;
 
-import java.util.ArrayList;
+import com.google.gson.Gson;
+
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This class is to represent an order
@@ -12,17 +15,10 @@ import java.util.Map;
 
 public class Order
 {
-    /**
-     * remove orderCount, currentOrderNum, currentOrder soon to
-     * match it up with the thesis.
-     */
-
-    private static int orderCount;
-    private String orderStatus;
+    private Timestamp timestamp;
     private String orderId;
     private String venueId;
     private String customerId;
-    private ArrayList<String> currentOrder;
     private Map<String, Integer> drinks;
 
     /* CONSTRUCTORS */
@@ -34,40 +30,24 @@ public class Order
      */
 
     public Order(){
-        currentOrder = new ArrayList<>();
         drinks = new HashMap<>();
-        orderCount++;
     }
 
-    public Order(String _customerId){
-        customerId = _customerId;
-        currentOrder = new ArrayList<>();
-        orderCount++;
-    }
-
-    public Order(String _customerId, String _venueId, ArrayList<String> _currentOrder){
+    public Order(String _customerId, String _venueId){
+        timestamp = new Timestamp(System.currentTimeMillis());
         customerId = _customerId;
         venueId = _venueId;
-        currentOrder = _currentOrder;
-        orderCount++;
+        generateOrderId();
+        drinks = new HashMap<>();
     }
 
-    /* GETTERS and SETTERS */
-
-    public void updateOrderStatus(String _status){
-        orderStatus = _status;
-    }
-
-    public String getOrderStatus(){
-        return orderStatus;
+    public void generateOrderId(){
+        orderId = UUID.randomUUID().toString();
+        orderId += "**" + customerId + "**" + venueId;
     }
 
     public String getOrderId(){
         return orderId;
-    }
-
-    public void setOrderId(String _orderId){
-        orderId = _orderId;
     }
 
     public String getCustomerId(){
@@ -78,29 +58,13 @@ public class Order
         customerId = _customerId;
     }
 
-    public ArrayList<String> getCurrentOrder() {
-        return currentOrder;
-    }
-
-    public void setCurrentOrder(ArrayList<String> currentOrder) {
-        this.currentOrder = currentOrder;
-    }
-
-    public static int getNumberOfOrders(){
-        return orderCount;
-    }
-
     public Map<String, Integer> getDrinks(){
         return drinks;
     }
 
-    public void addDrinkToOrder(String _drink) {
-        currentOrder.add(_drink.toString());
-    }
-
     public void addDrinkAndQuantityToOrder(String _drink, int _quantity) {
         drinks.put(_drink, _quantity);
-        currentOrder.add(_drink.toString());
+
     }
 
     public void decreaseQuantityOfDrink(String _drink){
@@ -109,53 +73,15 @@ public class Order
         else
         {
             drinks.remove(_drink);
-            currentOrder.remove(_drink);
         }
-    }
-
-    public void removeDrinkFromOrder(String _drink){
-        currentOrder.remove(_drink);
-    }
-
-    public ArrayList<String> getOrderAsStringArrayList(){
-        ArrayList<String> order = new ArrayList<>();
-
-        for(String d: currentOrder)
-            order.add(d.toString());
-
-        return order;
-    }
-
-    public String[] getOrderAsArray(){
-        String[] array = new String[20];
-        int i = 0;
-
-        for (Map.Entry<String, Integer> entry : drinks.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-
-            array[i] = key + "\t\tx. " + value;
-            i++;
-        }
-        return array;
     }
 
     public String toJsonString()
     {
-        String toReturn = "Order " + (orderCount + 1) + ":\n";
+        Gson gson = new Gson();
+        String x = gson.toJson(this, Order.class);
 
-        toReturn += "[\n";
-
-        // traverse the order map
-        for (Map.Entry<String, Integer> entry : drinks.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-            toReturn += "\t\"" + key + "\"" + " : " + value + "\n";
-        }
-
-        toReturn += "]\n";
-
-        return toReturn;
+        return x;
     }
 
 }

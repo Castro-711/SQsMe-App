@@ -1,6 +1,9 @@
 package com.squeuesme.activities.order;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -31,7 +34,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+import com.squeuesme.activities.CustomerHome;
 import com.squeuesme.activities.R;
+import com.squeuesme.activities.popup.PopCollect;
+import com.squeuesme.activities.popup.PopRegister;
 import com.squeuesme.core.Order;
 import com.squeuesme.core.Customer;
 import com.squeuesme.core.Venue;
@@ -107,16 +114,27 @@ public class OrderBuilderActivity extends Activity {
     private Button addClubOrange, removeClubOrange;
     private Button addSchweps, removeSchweps;
 
+    private String activeVen;
+    private String custId;
+    private boolean hasActiveOrder;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_horizontal_ntb);
 
+        SharedPreferences sharedPreferences =
+                this.getSharedPreferences("com.squeuesme.core",
+                        Context.MODE_PRIVATE);
+
+        activeVen = sharedPreferences.getString("activeVenue", null);
+        custId = sharedPreferences.getString("customerId", null);
+
         setupDBForOrders();
         setupDBReferenceListeners();
 
         orderContents = new HashMap<>();
-        order = new Order();
+        order = new Order(custId, activeVen);
         orderArray = new String[16];
         mAdapter = new MyAdapter(orderArray);
 
@@ -193,6 +211,19 @@ public class OrderBuilderActivity extends Activity {
                         public void onClick(View v) {
                             placeCurrentOrder();
                             Log.i("SQL get order: ", getOrder());
+                        }
+                    });
+
+                    Button clearOrder = view.findViewById(R.id.btnClear);
+
+                    clearOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            order.getDrinks().clear();
+                            for(int i = 0; i < orderArray.length; i++)
+                                orderArray[i] = null;
+
+                            mAdapter.notifyDataSetChanged();
                         }
                     });
 
@@ -788,12 +819,13 @@ public class OrderBuilderActivity extends Activity {
         }
         else{
             for(int i = 0; i < currentDrinkNum; i++)
-                if(orderArray[i].contains(name)){
-                    orderArray[i] = name + "\t\t" + ".x " + (current + 1);
-                    mAdapter.notifyDataSetChanged();
-                }
-        }
+                if(orderArray[i] != null)
+                    if(orderArray[i].contains(name)){
+                        orderArray[i] = name + "\t\t" + ".x " + (current + 1);
+                        mAdapter.notifyDataSetChanged();
+                    }
 
+        }
 
         Log.i("Order Contents", name + " -> " +
                 String.valueOf(order.getDrinks().get(name)));
@@ -913,14 +945,13 @@ public class OrderBuilderActivity extends Activity {
                     Log.i("Id", c.getString(idIndex) + "");
                     Log.i("Contents", c.getString(contentIndex) + "");
 
-                orders.add(new Order(c.getString(idIndex)));
+                orders.add(new Order());
 
                 // move to next result
                 c.moveToNext();
             }
             while(c.moveToNext());
         }
-
 
         return orderContents;
     }
@@ -941,10 +972,38 @@ public class OrderBuilderActivity extends Activity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                String order = (String) dataSnapshot.getValue();
+                String json = (String) dataSnapshot.getValue();
+
+                // need to check that the order is from this customer
+                // they do not have other customers orders coming to them
 
 
-                Log.i("Completed it", dataSnapshot.toString());
+                Log.i("order", order.getCustomerId());
+
+                if(!json.equals(null)){
+                    Gson gson = new Gson();
+                    Order order = gson.fromJson(json, Order.class);
+
+                    // in here is where it will notify the orderer when their drink
+                    // is ready
+                    if(order.getCustomerId() == order.getCustomerId() && hasActiveOrder){
+//                        findViewById(R.id.btnClear).setBackgroundColor(Color.RED);
+
+                        Intent i = new Intent(OrderBuilderActivity.this, PopCollect.class);
+                        i.putExtra("pubName", activeVen);
+                        startActivityForResult(i, 1);
+                    }
+
+                }
+
+
+                if(json.contains(order.getCustomerId()))
+                    Log.i("order", order.getCustomerId());
+
+                Log.i("Json", json);
+
+
+                Log.i("CustomerId", order.getCustomerId());
 
             }
 
@@ -976,8 +1035,46 @@ public class OrderBuilderActivity extends Activity {
         return split[1];
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("I am the requestCode", ""+requestCode);
+
+        Log.i("The REQUEST_CODE", ""+   requestCode);
+
+        SharedPreferences sharedPreferences =
+                this.getSharedPreferences("com.squeuesme.core",
+                        Context.MODE_PRIVATE);
+
+        // this gets executed if customer wants to order from this pub
+        if(resultCode == RESULT_OK)
+        {
+            hasActiveOrder = false;
+            customer = new Customer();
+
+            // get the customers uid
+            sharedPreferences.edit().putString("hasActiveOrder", hasActiveOrder + "");
+
+            String activeOrder = sharedPreferences.getString("hasActiveOrder", null);
+
+
+            Log.i("Active Order", "" + activeOrder);
+
+            Log.i("The REQUEST_CODE", ""+   requestCode);
+        }
+
+    }
+
     public void placeCurrentOrder() {
-        activeRef.push().setValue(order.toJsonString());
+
+        if(!hasActiveOrder)
+            if(!activeVen.equals(null) || !activeVen.equals(""))
+            {
+                activeRef.push().setValue(order.toJsonString());
+                Log.i("ActiveVen", activeVen);
+            }
+
+        hasActiveOrder = true;
     }
 
 }
